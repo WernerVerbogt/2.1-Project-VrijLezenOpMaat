@@ -1,0 +1,32 @@
+Kan later verwijderd worden
+
+Vragenpool Leesprofiel
+Er wordt beperkte set vragen gehanteerd tijdens Proof of Concept, 
+kies een representatieve set (min. 3) uit voorbeeldvragen
+
+**ACHTERGROND**
+- Leeftijd --> Meerkeuze
+- Eerste taal --> Nederlands / anders
+- Dyslexie of taalproblemen --> ja/nee/weet ik niet
+- Wordt er thuis veel gelezen? --> Ja/Nee/Soms/Weet ik niet
+- Gender --> Man/Vrouw/Non binair/anders
+- In welke taal lees je? --> opties nog te bepalen
+
+**LEESERVARING**
+- Welk(e) boek(en) die je gelezen hebt vond je leuk en waarom? --> Open
+- Welk(e) boek(en) die je gelezen hebt vond niet je leuk en waarom? --> Open
+
+**LEESPLEZIER**
+- Ik vind lezen leuk --> 1-4 schaal
+- Ik lees graag als het onderwerp mij interesseert --> 1-4 schaal
+- Ik lees omdat ik ... --> nieuwe werelden wil ontdekken / aan het denken wil worden gezet / iets wil leren of te weten wil komen / een betere of snellere lezer wil worden / mijn kansen op schoolsucces wil vergroten / ik wil niet lezen 
+
+**LEESVERTROUWEN**
+- Ik begrijp teksten goed --> 1-4 schaal
+
+**LEESVERMIJDING**
+- Ik lees alleen wanneer het moet --> 1-4 schaal
+
+**VOORKEUR**
+- Alleen tekst of tekst met afbeeldingen? --> alleen tekst / met afbeeldingen / maakt niet uit
+- Wat voor soort hoofdpersoon spreekt je aan? --> leeftijdgenoot / bekend persoon / held / buitenstaander
