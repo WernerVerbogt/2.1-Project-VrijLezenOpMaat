@@ -10,13 +10,18 @@ import { AuthModule } from './auth/auth.module'
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
+      envFilePath: '.env'
     }),
 
     MongooseModule.forRootAsync({
       inject: [ConfigService],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'), // Connects with DB
-      }),
+      useFactory: (configService: ConfigService) => {
+        console.log('Mongo URI:', configService.get<string>('MONGODB_URI'));
+        
+        return {
+          uri: configService.get<string>('MONGODB_URI'), // Connects with DB
+        };
+      },
     }),
 
     UsersModule,
