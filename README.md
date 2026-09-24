@@ -1,5 +1,6 @@
 # Vrij lezen op maat
 
+TODO set up this file
 Proof of Concept voor LU1.
 
 ## Technologieën
@@ -22,7 +23,3 @@ Proof of Concept voor LU1.
 - Docker
 - Docker Compose
 - GitHub Actions
-
-#### Versie 19-9-2026
-- Test draaien nog niet correct
-- Eerste opzet
