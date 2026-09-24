@@ -4,23 +4,19 @@
 import { Outlet } from "react-router-dom"
 import Header from "../components/layout/Header"
 import Footer from "../components/layout/Footer"
-import type { UserRole } from "../types/auth"
+//import type { UserRole } from "../types/auth"
 
-interface AppLayoutProps {
-    role: UserRole;
-}
-
-export default function AppLayout({ role }: AppLayoutProps) {
+export default function AppLayout() {
     return (
         <div className="app">
             <a href="#main-content" className="skip-link">
                 Ga naar hoofdinhoud
             </a>
 
-            <Header role={role} />
+            <Header />
 
             <main id="main-content" className="main-content" tabIndex={-1}>
-                <Outlet /> // This is where the content of the current route will be rendered
+                <Outlet />
             </main>
 
             <Footer />

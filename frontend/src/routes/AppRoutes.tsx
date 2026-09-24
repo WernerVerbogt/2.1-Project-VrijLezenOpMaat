@@ -8,36 +8,46 @@ import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
 import AppLayout from "../layouts/AppLayout";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import LoginPage from "../pages/LoginPage";
+import ProtectedRoute from "./ProtectedRoute";
+import RoleGuard from "./RoleGuard";
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
 
-                {/*Temp. starting point*/}
-                <Route path="/" element={<Navigate to="/student" replace />} />
+                <Route path="/" element={<Navigate to ="/login" replace />} />
 
-                {/* Login krijgt later geen normale app-navigatie */}
-                <Route path="/login" element={<PlaceholderPage title="Inloggen" />} />
+                <Route path="/login" element={<LoginPage />} />
 
-                {/*Routing for role student*/}
-                <Route path="/student" element={<AppLayout role="student" />}>
-                    <Route index element={<PlaceholderPage title="Home" />} />
-                    <Route path="profile" element={<PlaceholderPage title="Mijn leesprofiel" />} />
-                    <Route path="recommendations" element={<PlaceholderPage title="Mijn leesadvies" />} />
-                    <Route path="catalog" element={<PlaceholderPage title="Catalogus" />} />
-                    <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
-                    <Route path="teacher" element={<PlaceholderPage title="Mijn docent" />} />
+                {/*Everything below needs authentication*/}
+
+                <Route element={<ProtectedRoute />}>
+
+                    {/*Routings for student role*/}
+                    <Route element={<RoleGuard allowedRole="student" />}>
+                        <Route path="/student" element={<AppLayout />}>
+                            <Route index element={<PlaceholderPage title="Home" />} />
+                            <Route path="profile" element={<PlaceholderPage title="Mijn leesprofiel" />} />
+                            <Route path="recommendations" element={<PlaceholderPage title="Mijn leesadvies" />} />
+                            <Route path="catalog" element={<PlaceholderPage title="Catalogus" />} />
+                            <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
+                            <Route path="teacher" element={<PlaceholderPage title="Mijn docent" />} />
+                        </Route>
+                    </Route>
+
+                    {/*Routings for teacher */}
+                    <Route element={<RoleGuard allowedRole="teacher" />}>
+                        <Route path="/teacher" element={<AppLayout />}>
+                            <Route index element={<PlaceholderPage title="Docent dashboard" />} />
+                            <Route path="students" element={<PlaceholderPage title="Mijn studenten" />} />
+                            <Route path="students/:studentId" element={<PlaceholderPage title="Student bekijken" />} />
+                        </Route>
+                    </Route>
                 </Route>
 
-                {/*Routings for role teacher*/}
-                <Route path="/teacher" element={<AppLayout role="teacher" />}>
-                    <Route index element={<PlaceholderPage title="Docent dashboard" />} />
-                    <Route path="students" element={<PlaceholderPage title="Mijn studenten" />} />
-                    <Route path="students/:studentId" element={<PlaceholderPage title="Student bekijken" />} />
-                </Route>
-
-                <Route path="*" element={<NotFoundPage />} />             
+                <Route path="*" element={<NotFoundPage />} />
 
             </Routes>
         </BrowserRouter>

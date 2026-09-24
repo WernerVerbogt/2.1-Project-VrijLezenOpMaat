@@ -1,3 +1,210 @@
+/* Main */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+:root {
+  font-family: Inter, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  color: #1f2933;
+  background-color: #ffffff;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  min-width: 320px;
+  min-height: 100vh;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+a {
+  color: inherit;
+}
+
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+  flex: 1;
+}
+
+/* Headers */
+
+.site-header {
+  background: #ffffff;
+  border-bottom: 1px solid #d8dee4;
+}
+
+.site-header__container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1rem 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.site-header__logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.site-header__account {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.site-header__account button {
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: 1px solid #68717d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+/* Navigation */
+
+.navigation__list {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navigation__link {
+  display: inline-block;
+  padding: 0.75rem;
+  color: #346152;
+  text-decoration: none;
+  border-radius: 0.25rem;
+}
+
+.navigation__link:hover {
+  background-color: #f1f3f5;
+}
+
+.navigation__link--active {
+  font-weight: 700;
+  background-color: #e6edf5;
+}
+
+/* Show focus with outline for accessability. Must have for WCAG */
+/* TODO work out for other elements */
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 3px solid #005fcc;
+  outline-offset: 3px;
+}
+
+/* Navigates directly to main content without going through every nav link */
+.skip-link {
+  position: absolute;
+  left: 1rem;
+  top: -100px;
+  padding: 0.75rem 1rem;
+  background-color: #ffffff;
+  color: #000000;
+  border: 2px solid #000000;
+  z-index: 1000;
+}
+
+.skip-link:focus {
+  top: 1rem;
+}
+
+/* Footer */
+
+.site-footer {
+  border-top: 1px solid #d8dee4;
+  background-color: #f7f8fa;
+}
+
+.site-footer__container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 1.5rem;
+}
+
+/* Mobile navigation */
+/* On smaller screens, the Menu button will pop up for the navigation */
+
+.menu-button {
+  display: none;
+  padding: 0.6rem 1rem;
+  background: #ffffff;
+  border: 1px solid #68717d;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .site-header__container {
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .menu-button {
+    display: block;
+    margin-left: auto;
+  }
+
+  .site-header__account {
+    display: none;
+  }
+
+  .navigation {
+    display: none;
+    width: 100%;
+  }
+
+  .navigation--open {
+    display: block;
+  }
+
+  .navigation__list {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .navigation__link {
+    display: block;
+  }
+
+  .main-content {
+    padding: 1.5rem 1rem;
+  }
+}
+
+/* 
 :root {
   --text: #6b6375;
   --text-h: #08060d;
@@ -109,3 +316,4 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+*/
