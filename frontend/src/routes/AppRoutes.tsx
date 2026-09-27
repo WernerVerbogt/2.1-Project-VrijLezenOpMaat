@@ -12,6 +12,7 @@ import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
 import LandingPage from "../pages/LandingPage";
+import CatalogPage from "../pages/CatalogPage";
 
 export default function AppRoutes() {
     return (
@@ -33,7 +34,7 @@ export default function AppRoutes() {
                             <Route index element={<PlaceholderPage title="Home" />} />
                             <Route path="profile" element={<PlaceholderPage title="Mijn leesprofiel" />} />
                             <Route path="recommendations" element={<PlaceholderPage title="Mijn leesadvies" />} />
-                            <Route path="catalog" element={<PlaceholderPage title="Catalogus" />} />
+                            <Route path="catalog" element={<CatalogPage /> } />
                             <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
                             <Route path="teacher" element={<PlaceholderPage title="Mijn docent" />} />
                         </Route>
