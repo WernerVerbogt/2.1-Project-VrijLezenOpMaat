@@ -4,20 +4,22 @@ The AppLayout component is used to provide a consistent layout for the student a
 while PlaceholderPage components are used to represent the content of each route. 
 The BrowserRouter component wraps the entire routing structure, enabling navigation between different pages in the application. */
 
-import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom";
+import { BrowserRouter, Route, Routes } from "react-router-dom"; {/* TODO add Navigate */}
 import AppLayout from "../layouts/AppLayout";
 import PlaceholderPage from "../pages/PlaceholderPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
+import LandingPage from "../pages/LandingPage";
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
 
-                <Route path="/" element={<Navigate to ="/login" replace />} />
+                <Route path="/" element={<LandingPage />} />
+                {/*<Route path="/" element={<Navigate to ="/" replace />} /> {/*TODO replace with login ??*/}
 
                 <Route path="/login" element={<LoginPage />} />
 

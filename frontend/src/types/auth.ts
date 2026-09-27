@@ -14,3 +14,15 @@ export interface AuthUser {
     role: UserRole;
 }
 
+export interface RegisterData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    password: string;
+    role: UserRole;
+}
+
+export interface LoginCredentials {
+    email: string;
+    password: string;
+}

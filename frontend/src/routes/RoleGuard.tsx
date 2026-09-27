@@ -15,7 +15,7 @@ export default function RoleGuard({
     const { user } = useAuth();
 
     if (!user) {
-        return <Navigate to="/login" replace />; 
+        return <Navigate to="/" replace />; // TODO replace with either homepage or login
     }
 
     if (user.role !== allowedRole) {

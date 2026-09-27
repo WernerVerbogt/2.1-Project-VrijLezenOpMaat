@@ -1,58 +1,86 @@
 // Temporary code to check accounts and login
 
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
-import type { AuthUser } from "../types/auth";
-
-const mockStudent: AuthUser = {
-    id: 1,
-    firstName: "Werner",
-    lastName: "Verbogt",
-    email: "werner.verbogt@mail.nl",
-    role: "student",
-};
-
-const mockTeacher: AuthUser = {
-    id: 2,
-    firstName: "Jan",
-    lastName: "Jan",
-    email: "dubbeljan@mail.nl",
-    role: "teacher",
-};
+import { loginUser } from "../services/authService";
+//import type { AuthUser } from "../types/auth";
 
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
-    
-    function loginAsStudent() {
-        login(mockStudent);
-        navigate("/student");
-    }
 
-    function loginAsTeacher() {
-        login(mockTeacher);
-        navigate("/teacher");
+    const [email, setEmail] = useState("");
+    const [password, setPassword] = useState("");
+
+    const [error, setError] = useState("");
+    const [isSubmitting, setIsSubmitting] = useState(false);
+
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>,) {
+        event.preventDefault();
+
+        setError("");
+        setIsSubmitting(true);
+
+        try {
+            const user = await loginUser({
+                email,
+                password,
+            });
+
+            login(user);
+
+            if (user.role === "student") {
+                navigate("/student");
+            }
+            else {
+                navigate("/teacher");
+            }
+        } catch (error) {
+            if (error instanceof Error) {
+                setError(error.message);
+            }
+        } finally {
+            setIsSubmitting(false);
+        }
     }
 
     return (
-        <main className="login-page">
-            <section className="login-card">
+        <main className="auth-page">
+            <section className="auth-card">
                 <h1>Inloggen</h1>
 
-                <p>
-                    Tijdelijke testomgeving voor authenticatie en autorisatie.
-                </p>
+                <form onSubmit={handleSubmit}>
+                    <div className="form-field">
+                        <label htmlFor="email">
+                            E-mailadres
+                        </label>
 
-                <div className="login-card__action">
-                    <button type="button" onClick={loginAsStudent}>
-                        Test login als student
-                    </button>
+                        <input id="email" name="email" type="email" autoComplete="email" required value={email}
+                        onChange={(event) => setEmail(event.target.value)} />
 
-                    <button type="button" onClick={loginAsTeacher}>
-                        Test login als docent
+                    </div>
+
+                    <div className="form-field">
+                        <label htmlFor="password">
+                            Wachtwoord
+                        </label>
+
+                        <input id="password" name="password" type="password" autoComplete="current-password" required value={password}
+                        onChange={(event) => setPassword(event.target.value)} />
+                    </div>
+
+                    {error && (
+                        <p className="form-error" role="alert">
+                            {error}
+                        </p>
+                    )}
+
+                    <button type="submit" disabled={isSubmitting}>
+                        {isSubmitting ? "Bezig ..." : "Inloggen"}
                     </button>
-                </div>
+                </form>
             </section>
         </main>
-    );
+    )
 }
