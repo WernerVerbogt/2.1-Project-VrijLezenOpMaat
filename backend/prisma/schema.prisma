@@ -5,9 +5,85 @@
 
 generator client {
   provider = "prisma-client"
-  output   = "./generated/prisma"
+  output   = "../src/generated/prisma"
 }
 
 datasource db {
-  provider = "postgresql" // postgresql is default here
+  provider = "postgresql"
+}
+
+enum UserRole {
+  STUDENT
+  TEACHER
+}
+
+model User {
+  id           String   @id @default(uuid()) @db.Uuid
+  email        String   @unique
+  passwordHash String
+  firstName    String
+  lastName     String
+  role         UserRole
+
+  readingProfile        ReadingProfile?
+  readingListItems      ReadingListItem[] @relation("StudentReadingList")
+  addedReadingListItems ReadingListItem[] @relation("AddedByUser")
+
+  studentLinks TeacherStudentLink[] @relation("StudentLinks")
+  teacherLinks TeacherStudentLink[] @relation("TeacherLinks")
+}
+
+model ReadingProfile {
+  studentId           String @id @db.Uuid
+  languageLevelCode   String
+  preferredLengthCode String
+  readingGoalCode     String
+
+  student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
+
+  genres ProfileGenre[]
+  themes ProfileTheme[]
+}
+
+model ProfileGenre {
+  studentId String @db.Uuid
+  genreCode String
+
+  readingProfile ReadingProfile @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+
+  @@id([studentId, genreCode])
+}
+
+model ProfileTheme {
+  studentId String @db.Uuid
+  themeCode String
+
+  readingProfile ReadingProfile @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+
+  @@id([studentId, themeCode])
+}
+
+model TeacherStudentLink {
+  studentId String @db.Uuid
+  teacherId String @db.Uuid
+
+  student User @relation("StudentLinks", fields: [studentId], references: [id], onDelete: Cascade)
+
+  teacher User @relation("TeacherLinks", fields: [teacherId], references: [id], onDelete: Cascade)
+
+  @@id([studentId, teacherId])
+}
+
+model ReadingListItem {
+  studentId     String   @db.Uuid
+  bookId        String
+  isRead        Boolean  @default(false)
+  addedByUserId String   @db.Uuid
+  addedAt       DateTime @default(now())
+
+  student User @relation("StudentReadingList", fields: [studentId], references: [id], onDelete: Cascade)
+
+  addedBy User @relation("AddedByUser", fields: [addedByUserId], references: [id])
+
+  @@id([studentId, bookId])
 }
