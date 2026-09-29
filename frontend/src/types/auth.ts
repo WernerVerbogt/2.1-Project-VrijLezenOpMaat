@@ -7,19 +7,16 @@ export type UserRole = "student" | "teacher";
 // No password through the frontend!
 
 export interface AuthUser {
-    id: number;
+    id: string;
     firstName: string;
     lastName: string;
     email: string;
     role: UserRole;
 }
 
-export interface RegisterData {
-    firstName: string;
-    lastName: string;
-    email: string;
-    password: string;
-    role: UserRole;
+export interface LoginResponse {
+    accessToken: string;
+    user: AuthUser;
 }
 
 export interface LoginCredentials {

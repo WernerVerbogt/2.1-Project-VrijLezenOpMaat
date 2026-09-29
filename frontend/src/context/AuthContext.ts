@@ -4,7 +4,7 @@
 - Is someone logged in?
 - Login and logout
 
-Global state is active here for the user that is logged in
+Global authentication state is active here for the logged-in user.
 
 This function is separated in 3 files for fast refresh
 */
@@ -14,8 +14,9 @@ import type { AuthUser } from "../types/auth"
 
 export interface AuthContextType {
     user: AuthUser | null;
+    accessToken: string | null;
     isAuthenticated: boolean;
-    login: (user: AuthUser) => void;
+    login: (user: AuthUser, accessToken: string) => void;
     logout: () => void;
 }
 

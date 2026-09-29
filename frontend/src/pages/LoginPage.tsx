@@ -23,14 +23,14 @@ export default function LoginPage() {
         setIsSubmitting(true);
 
         try {
-            const user = await loginUser({
+            const response = await loginUser({
                 email,
                 password,
             });
 
-            login(user);
+            login(response.user, response.accessToken);
 
-            if (user.role === "student") {
+            if (response.user.role === "student") {
                 navigate("/student");
             }
             else {

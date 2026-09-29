@@ -1,16 +1,28 @@
+// This file defines the AuthModule, which is responsible for handling authentication-related functionality 
+// in the application. It imports necessary modules such as PrismaModule for database interactions, UsersModule 
+// for user management, and ConfigModule for configuration management. The JwtModule is configured asynchronously 
+// to use a secret key from the environment variables for signing JWT tokens. The AuthController handles incoming 
+// requests related to authentication, while the AuthService contains the business logic for authentication processes. 
+// The AuthGuard is provided globally to protect routes that require authentication.
+
 import { Module } from '@nestjs/common';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { APP_GUARD } from '@nestjs/core';
+
 import { AuthController } from './auth.controller';
 import { AuthService } from './auth.service';
-import { UsersModule } from '../users/users.module';
 import { AuthGuard } from './auth.guard';
-import { APP_GUARD } from '@nestjs/core/constants.js';
+
+import { UsersModule } from '../users/users.module';
+import { PrismaModule } from '../prisma/prisma.module';
 
 @Module({
   imports: [
+    PrismaModule,
     UsersModule,
     ConfigModule,
+
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -21,6 +33,7 @@ import { APP_GUARD } from '@nestjs/core/constants.js';
     }),
   ],
   controllers: [AuthController],
+  
   providers: [
     AuthService,
     {

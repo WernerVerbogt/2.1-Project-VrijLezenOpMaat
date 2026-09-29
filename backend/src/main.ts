@@ -10,6 +10,10 @@ async function bootstrap() {
   //const users = await prisma.user.findMany();
   //console.log(`PostgreSQL connection succesful. Users found: ${users.length}`);
 
+  app.enableCors({
+    origin: "http://localhost:5173"
+  })
+
   await app.listen(process.env.PORT ?? 3000);
 }
 void bootstrap();
