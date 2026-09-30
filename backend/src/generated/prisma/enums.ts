@@ -15,3 +15,13 @@ export const UserRole = {
 } as const
 
 export type UserRole = (typeof UserRole)[keyof typeof UserRole]
+
+
+export const ProfileAnswerType = {
+  SINGLE_CHOICE: 'SINGLE_CHOICE',
+  MULTIPLE_CHOICE: 'MULTIPLE_CHOICE',
+  SCALE: 'SCALE',
+  OPEN_TEXT: 'OPEN_TEXT'
+} as const
+
+export type ProfileAnswerType = (typeof ProfileAnswerType)[keyof typeof ProfileAnswerType]

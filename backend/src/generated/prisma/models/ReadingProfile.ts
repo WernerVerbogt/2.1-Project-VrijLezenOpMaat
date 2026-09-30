@@ -177,6 +177,7 @@ export type ReadingProfileWhereInput = {
   student?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   genres?: Prisma.ProfileGenreListRelationFilter
   themes?: Prisma.ProfileThemeListRelationFilter
+  answers?: Prisma.ProfileAnswerListRelationFilter
 }
 
 export type ReadingProfileOrderByWithRelationInput = {
@@ -187,6 +188,7 @@ export type ReadingProfileOrderByWithRelationInput = {
   student?: Prisma.UserOrderByWithRelationInput
   genres?: Prisma.ProfileGenreOrderByRelationAggregateInput
   themes?: Prisma.ProfileThemeOrderByRelationAggregateInput
+  answers?: Prisma.ProfileAnswerOrderByRelationAggregateInput
 }
 
 export type ReadingProfileWhereUniqueInput = Prisma.AtLeast<{
@@ -200,6 +202,7 @@ export type ReadingProfileWhereUniqueInput = Prisma.AtLeast<{
   student?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
   genres?: Prisma.ProfileGenreListRelationFilter
   themes?: Prisma.ProfileThemeListRelationFilter
+  answers?: Prisma.ProfileAnswerListRelationFilter
 }, "studentId">
 
 export type ReadingProfileOrderByWithAggregationInput = {
@@ -229,6 +232,7 @@ export type ReadingProfileCreateInput = {
   student: Prisma.UserCreateNestedOneWithoutReadingProfileInput
   genres?: Prisma.ProfileGenreCreateNestedManyWithoutReadingProfileInput
   themes?: Prisma.ProfileThemeCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileUncheckedCreateInput = {
@@ -238,6 +242,7 @@ export type ReadingProfileUncheckedCreateInput = {
   readingGoalCode: string
   genres?: Prisma.ProfileGenreUncheckedCreateNestedManyWithoutReadingProfileInput
   themes?: Prisma.ProfileThemeUncheckedCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerUncheckedCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileUpdateInput = {
@@ -247,6 +252,7 @@ export type ReadingProfileUpdateInput = {
   student?: Prisma.UserUpdateOneRequiredWithoutReadingProfileNestedInput
   genres?: Prisma.ProfileGenreUpdateManyWithoutReadingProfileNestedInput
   themes?: Prisma.ProfileThemeUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileUncheckedUpdateInput = {
@@ -256,6 +262,7 @@ export type ReadingProfileUncheckedUpdateInput = {
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   genres?: Prisma.ProfileGenreUncheckedUpdateManyWithoutReadingProfileNestedInput
   themes?: Prisma.ProfileThemeUncheckedUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUncheckedUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileCreateManyInput = {
@@ -369,12 +376,27 @@ export type ReadingProfileUpdateOneRequiredWithoutThemesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ReadingProfileUpdateToOneWithWhereWithoutThemesInput, Prisma.ReadingProfileUpdateWithoutThemesInput>, Prisma.ReadingProfileUncheckedUpdateWithoutThemesInput>
 }
 
+export type ReadingProfileCreateNestedOneWithoutAnswersInput = {
+  create?: Prisma.XOR<Prisma.ReadingProfileCreateWithoutAnswersInput, Prisma.ReadingProfileUncheckedCreateWithoutAnswersInput>
+  connectOrCreate?: Prisma.ReadingProfileCreateOrConnectWithoutAnswersInput
+  connect?: Prisma.ReadingProfileWhereUniqueInput
+}
+
+export type ReadingProfileUpdateOneRequiredWithoutAnswersNestedInput = {
+  create?: Prisma.XOR<Prisma.ReadingProfileCreateWithoutAnswersInput, Prisma.ReadingProfileUncheckedCreateWithoutAnswersInput>
+  connectOrCreate?: Prisma.ReadingProfileCreateOrConnectWithoutAnswersInput
+  upsert?: Prisma.ReadingProfileUpsertWithoutAnswersInput
+  connect?: Prisma.ReadingProfileWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ReadingProfileUpdateToOneWithWhereWithoutAnswersInput, Prisma.ReadingProfileUpdateWithoutAnswersInput>, Prisma.ReadingProfileUncheckedUpdateWithoutAnswersInput>
+}
+
 export type ReadingProfileCreateWithoutStudentInput = {
   languageLevelCode: string
   preferredLengthCode: string
   readingGoalCode: string
   genres?: Prisma.ProfileGenreCreateNestedManyWithoutReadingProfileInput
   themes?: Prisma.ProfileThemeCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileUncheckedCreateWithoutStudentInput = {
@@ -383,6 +405,7 @@ export type ReadingProfileUncheckedCreateWithoutStudentInput = {
   readingGoalCode: string
   genres?: Prisma.ProfileGenreUncheckedCreateNestedManyWithoutReadingProfileInput
   themes?: Prisma.ProfileThemeUncheckedCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerUncheckedCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileCreateOrConnectWithoutStudentInput = {
@@ -407,6 +430,7 @@ export type ReadingProfileUpdateWithoutStudentInput = {
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   genres?: Prisma.ProfileGenreUpdateManyWithoutReadingProfileNestedInput
   themes?: Prisma.ProfileThemeUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileUncheckedUpdateWithoutStudentInput = {
@@ -415,6 +439,7 @@ export type ReadingProfileUncheckedUpdateWithoutStudentInput = {
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   genres?: Prisma.ProfileGenreUncheckedUpdateManyWithoutReadingProfileNestedInput
   themes?: Prisma.ProfileThemeUncheckedUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUncheckedUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileCreateWithoutGenresInput = {
@@ -423,6 +448,7 @@ export type ReadingProfileCreateWithoutGenresInput = {
   readingGoalCode: string
   student: Prisma.UserCreateNestedOneWithoutReadingProfileInput
   themes?: Prisma.ProfileThemeCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileUncheckedCreateWithoutGenresInput = {
@@ -431,6 +457,7 @@ export type ReadingProfileUncheckedCreateWithoutGenresInput = {
   preferredLengthCode: string
   readingGoalCode: string
   themes?: Prisma.ProfileThemeUncheckedCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerUncheckedCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileCreateOrConnectWithoutGenresInput = {
@@ -455,6 +482,7 @@ export type ReadingProfileUpdateWithoutGenresInput = {
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   student?: Prisma.UserUpdateOneRequiredWithoutReadingProfileNestedInput
   themes?: Prisma.ProfileThemeUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileUncheckedUpdateWithoutGenresInput = {
@@ -463,6 +491,7 @@ export type ReadingProfileUncheckedUpdateWithoutGenresInput = {
   preferredLengthCode?: Prisma.StringFieldUpdateOperationsInput | string
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   themes?: Prisma.ProfileThemeUncheckedUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUncheckedUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileCreateWithoutThemesInput = {
@@ -471,6 +500,7 @@ export type ReadingProfileCreateWithoutThemesInput = {
   readingGoalCode: string
   student: Prisma.UserCreateNestedOneWithoutReadingProfileInput
   genres?: Prisma.ProfileGenreCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileUncheckedCreateWithoutThemesInput = {
@@ -479,6 +509,7 @@ export type ReadingProfileUncheckedCreateWithoutThemesInput = {
   preferredLengthCode: string
   readingGoalCode: string
   genres?: Prisma.ProfileGenreUncheckedCreateNestedManyWithoutReadingProfileInput
+  answers?: Prisma.ProfileAnswerUncheckedCreateNestedManyWithoutReadingProfileInput
 }
 
 export type ReadingProfileCreateOrConnectWithoutThemesInput = {
@@ -503,6 +534,7 @@ export type ReadingProfileUpdateWithoutThemesInput = {
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   student?: Prisma.UserUpdateOneRequiredWithoutReadingProfileNestedInput
   genres?: Prisma.ProfileGenreUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUpdateManyWithoutReadingProfileNestedInput
 }
 
 export type ReadingProfileUncheckedUpdateWithoutThemesInput = {
@@ -511,6 +543,59 @@ export type ReadingProfileUncheckedUpdateWithoutThemesInput = {
   preferredLengthCode?: Prisma.StringFieldUpdateOperationsInput | string
   readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
   genres?: Prisma.ProfileGenreUncheckedUpdateManyWithoutReadingProfileNestedInput
+  answers?: Prisma.ProfileAnswerUncheckedUpdateManyWithoutReadingProfileNestedInput
+}
+
+export type ReadingProfileCreateWithoutAnswersInput = {
+  languageLevelCode: string
+  preferredLengthCode: string
+  readingGoalCode: string
+  student: Prisma.UserCreateNestedOneWithoutReadingProfileInput
+  genres?: Prisma.ProfileGenreCreateNestedManyWithoutReadingProfileInput
+  themes?: Prisma.ProfileThemeCreateNestedManyWithoutReadingProfileInput
+}
+
+export type ReadingProfileUncheckedCreateWithoutAnswersInput = {
+  studentId: string
+  languageLevelCode: string
+  preferredLengthCode: string
+  readingGoalCode: string
+  genres?: Prisma.ProfileGenreUncheckedCreateNestedManyWithoutReadingProfileInput
+  themes?: Prisma.ProfileThemeUncheckedCreateNestedManyWithoutReadingProfileInput
+}
+
+export type ReadingProfileCreateOrConnectWithoutAnswersInput = {
+  where: Prisma.ReadingProfileWhereUniqueInput
+  create: Prisma.XOR<Prisma.ReadingProfileCreateWithoutAnswersInput, Prisma.ReadingProfileUncheckedCreateWithoutAnswersInput>
+}
+
+export type ReadingProfileUpsertWithoutAnswersInput = {
+  update: Prisma.XOR<Prisma.ReadingProfileUpdateWithoutAnswersInput, Prisma.ReadingProfileUncheckedUpdateWithoutAnswersInput>
+  create: Prisma.XOR<Prisma.ReadingProfileCreateWithoutAnswersInput, Prisma.ReadingProfileUncheckedCreateWithoutAnswersInput>
+  where?: Prisma.ReadingProfileWhereInput
+}
+
+export type ReadingProfileUpdateToOneWithWhereWithoutAnswersInput = {
+  where?: Prisma.ReadingProfileWhereInput
+  data: Prisma.XOR<Prisma.ReadingProfileUpdateWithoutAnswersInput, Prisma.ReadingProfileUncheckedUpdateWithoutAnswersInput>
+}
+
+export type ReadingProfileUpdateWithoutAnswersInput = {
+  languageLevelCode?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLengthCode?: Prisma.StringFieldUpdateOperationsInput | string
+  readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
+  student?: Prisma.UserUpdateOneRequiredWithoutReadingProfileNestedInput
+  genres?: Prisma.ProfileGenreUpdateManyWithoutReadingProfileNestedInput
+  themes?: Prisma.ProfileThemeUpdateManyWithoutReadingProfileNestedInput
+}
+
+export type ReadingProfileUncheckedUpdateWithoutAnswersInput = {
+  studentId?: Prisma.StringFieldUpdateOperationsInput | string
+  languageLevelCode?: Prisma.StringFieldUpdateOperationsInput | string
+  preferredLengthCode?: Prisma.StringFieldUpdateOperationsInput | string
+  readingGoalCode?: Prisma.StringFieldUpdateOperationsInput | string
+  genres?: Prisma.ProfileGenreUncheckedUpdateManyWithoutReadingProfileNestedInput
+  themes?: Prisma.ProfileThemeUncheckedUpdateManyWithoutReadingProfileNestedInput
 }
 
 
@@ -521,11 +606,13 @@ export type ReadingProfileUncheckedUpdateWithoutThemesInput = {
 export type ReadingProfileCountOutputType = {
   genres: number
   themes: number
+  answers: number
 }
 
 export type ReadingProfileCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   genres?: boolean | ReadingProfileCountOutputTypeCountGenresArgs
   themes?: boolean | ReadingProfileCountOutputTypeCountThemesArgs
+  answers?: boolean | ReadingProfileCountOutputTypeCountAnswersArgs
 }
 
 /**
@@ -552,6 +639,13 @@ export type ReadingProfileCountOutputTypeCountThemesArgs<ExtArgs extends runtime
   where?: Prisma.ProfileThemeWhereInput
 }
 
+/**
+ * ReadingProfileCountOutputType without action
+ */
+export type ReadingProfileCountOutputTypeCountAnswersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProfileAnswerWhereInput
+}
+
 
 export type ReadingProfileSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   studentId?: boolean
@@ -561,6 +655,7 @@ export type ReadingProfileSelect<ExtArgs extends runtime.Types.Extensions.Intern
   student?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   genres?: boolean | Prisma.ReadingProfile$genresArgs<ExtArgs>
   themes?: boolean | Prisma.ReadingProfile$themesArgs<ExtArgs>
+  answers?: boolean | Prisma.ReadingProfile$answersArgs<ExtArgs>
   _count?: boolean | Prisma.ReadingProfileCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["readingProfile"]>
 
@@ -592,6 +687,7 @@ export type ReadingProfileInclude<ExtArgs extends runtime.Types.Extensions.Inter
   student?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   genres?: boolean | Prisma.ReadingProfile$genresArgs<ExtArgs>
   themes?: boolean | Prisma.ReadingProfile$themesArgs<ExtArgs>
+  answers?: boolean | Prisma.ReadingProfile$answersArgs<ExtArgs>
   _count?: boolean | Prisma.ReadingProfileCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ReadingProfileIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -607,6 +703,7 @@ export type $ReadingProfilePayload<ExtArgs extends runtime.Types.Extensions.Inte
     student: Prisma.$UserPayload<ExtArgs>
     genres: Prisma.$ProfileGenrePayload<ExtArgs>[]
     themes: Prisma.$ProfileThemePayload<ExtArgs>[]
+    answers: Prisma.$ProfileAnswerPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     studentId: string
@@ -1010,6 +1107,7 @@ export interface Prisma__ReadingProfileClient<T, Null = never, ExtArgs extends r
   student<T extends Prisma.UserDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.UserDefaultArgs<ExtArgs>>): Prisma.Prisma__UserClient<runtime.Types.Result.GetResult<Prisma.$UserPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   genres<T extends Prisma.ReadingProfile$genresArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReadingProfile$genresArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileGenrePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   themes<T extends Prisma.ReadingProfile$themesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReadingProfile$themesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileThemePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  answers<T extends Prisma.ReadingProfile$answersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ReadingProfile$answersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProfileAnswerPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1489,6 +1587,30 @@ export type ReadingProfile$themesArgs<ExtArgs extends runtime.Types.Extensions.I
   take?: number
   skip?: number
   distinct?: Prisma.ProfileThemeScalarFieldEnum | Prisma.ProfileThemeScalarFieldEnum[]
+}
+
+/**
+ * ReadingProfile.answers
+ */
+export type ReadingProfile$answersArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProfileAnswer
+   */
+  select?: Prisma.ProfileAnswerSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProfileAnswer
+   */
+  omit?: Prisma.ProfileAnswerOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProfileAnswerInclude<ExtArgs> | null
+  where?: Prisma.ProfileAnswerWhereInput
+  orderBy?: Prisma.ProfileAnswerOrderByWithRelationInput | Prisma.ProfileAnswerOrderByWithRelationInput[]
+  cursor?: Prisma.ProfileAnswerWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProfileAnswerScalarFieldEnum | Prisma.ProfileAnswerScalarFieldEnum[]
 }
 
 /**

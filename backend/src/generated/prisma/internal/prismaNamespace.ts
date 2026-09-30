@@ -402,7 +402,8 @@ export const ModelName = {
   ProfileGenre: 'ProfileGenre',
   ProfileTheme: 'ProfileTheme',
   TeacherStudentLink: 'TeacherStudentLink',
-  ReadingListItem: 'ReadingListItem'
+  ReadingListItem: 'ReadingListItem',
+  ProfileAnswer: 'ProfileAnswer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -418,7 +419,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "user" | "readingProfile" | "profileGenre" | "profileTheme" | "teacherStudentLink" | "readingListItem"
+    modelProps: "user" | "readingProfile" | "profileGenre" | "profileTheme" | "teacherStudentLink" | "readingListItem" | "profileAnswer"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -866,6 +867,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProfileAnswer: {
+      payload: Prisma.$ProfileAnswerPayload<ExtArgs>
+      fields: Prisma.ProfileAnswerFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProfileAnswerFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProfileAnswerFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        findFirst: {
+          args: Prisma.ProfileAnswerFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProfileAnswerFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        findMany: {
+          args: Prisma.ProfileAnswerFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>[]
+        }
+        create: {
+          args: Prisma.ProfileAnswerCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        createMany: {
+          args: Prisma.ProfileAnswerCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProfileAnswerCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>[]
+        }
+        delete: {
+          args: Prisma.ProfileAnswerDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        update: {
+          args: Prisma.ProfileAnswerUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProfileAnswerDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProfileAnswerUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProfileAnswerUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProfileAnswerUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProfileAnswerPayload>
+        }
+        aggregate: {
+          args: Prisma.ProfileAnswerAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProfileAnswer>
+        }
+        groupBy: {
+          args: Prisma.ProfileAnswerGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfileAnswerGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProfileAnswerCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProfileAnswerCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -962,6 +1037,19 @@ export const ReadingListItemScalarFieldEnum = {
 export type ReadingListItemScalarFieldEnum = (typeof ReadingListItemScalarFieldEnum)[keyof typeof ReadingListItemScalarFieldEnum]
 
 
+export const ProfileAnswerScalarFieldEnum = {
+  studentId: 'studentId',
+  questionCode: 'questionCode',
+  answerType: 'answerType',
+  stringValue: 'stringValue',
+  stringValues: 'stringValues',
+  numberValue: 'numberValue',
+  textValue: 'textValue'
+} as const
+
+export type ProfileAnswerScalarFieldEnum = (typeof ProfileAnswerScalarFieldEnum)[keyof typeof ProfileAnswerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -976,6 +1064,14 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
 
 
@@ -1034,6 +1130,20 @@ export type ListDateTimeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaM
 
 
 /**
+ * Reference to a field of type 'ProfileAnswerType'
+ */
+export type EnumProfileAnswerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProfileAnswerType'>
+    
+
+
+/**
+ * Reference to a field of type 'ProfileAnswerType[]'
+ */
+export type ListEnumProfileAnswerTypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProfileAnswerType[]'>
+    
+
+
+/**
  * Reference to a field of type 'Int'
  */
 export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int'>
@@ -1044,6 +1154,20 @@ export type IntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'In
  * Reference to a field of type 'Int[]'
  */
 export type ListIntFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Int[]'>
+    
+
+
+/**
+ * Reference to a field of type 'Float'
+ */
+export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
+    
+
+
+/**
+ * Reference to a field of type 'Float[]'
+ */
+export type ListFloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float[]'>
     
 
 /**
@@ -1203,6 +1327,7 @@ export type GlobalOmitConfig = {
   profileTheme?: Prisma.ProfileThemeOmit
   teacherStudentLink?: Prisma.TeacherStudentLinkOmit
   readingListItem?: Prisma.ReadingListItemOmit
+  profileAnswer?: Prisma.ProfileAnswerOmit
 }
 
 /* Types for Logging */

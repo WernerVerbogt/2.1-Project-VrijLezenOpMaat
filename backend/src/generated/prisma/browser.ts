@@ -47,3 +47,8 @@ export type TeacherStudentLink = Prisma.TeacherStudentLinkModel
  * 
  */
 export type ReadingListItem = Prisma.ReadingListItemModel
+/**
+ * Model ProfileAnswer
+ * 
+ */
+export type ProfileAnswer = Prisma.ProfileAnswerModel

@@ -1,3 +1,8 @@
+/** Root module of the NestJS application.
+ * It configures environment variables, MongoDB, PostgreSQL/Prisma,
+ * authentication, books, and the reading profile feature. 
+ * */
+
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
@@ -7,14 +12,17 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module'
 import { BooksModule } from './books/books.module';
+import { ReadingProfileModule } from './reading-profile/reading-profile.module';
 
 @Module({
   imports: [
+    // Makes environment variables from .env file available thoughout the app
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: '.env'
     }),
 
+    // Connection NestJS <-> MongoDB
     MongooseModule.forRootAsync({
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => {
@@ -26,10 +34,12 @@ import { BooksModule } from './books/books.module';
       },
     }),
 
+    
     UsersModule,
     AuthModule,
     BooksModule,
-    PrismaModule
+    PrismaModule,
+    ReadingProfileModule
   ],
 })
 

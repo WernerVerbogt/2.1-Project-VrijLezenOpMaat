@@ -41,8 +41,9 @@ model ReadingProfile {
 
   student User @relation(fields: [studentId], references: [id], onDelete: Cascade)
 
-  genres ProfileGenre[]
-  themes ProfileTheme[]
+  genres  ProfileGenre[]
+  themes  ProfileTheme[]
+  answers ProfileAnswer[]
 }
 
 model ProfileGenre {
@@ -86,4 +87,26 @@ model ReadingListItem {
   addedBy User @relation("AddedByUser", fields: [addedByUserId], references: [id])
 
   @@id([studentId, bookId])
+}
+
+enum ProfileAnswerType {
+  SINGLE_CHOICE
+  MULTIPLE_CHOICE
+  SCALE
+  OPEN_TEXT
+}
+
+model ProfileAnswer {
+  studentId    String            @db.Uuid
+  questionCode String
+  answerType   ProfileAnswerType
+
+  stringValue  String?
+  stringValues String[]
+  numberValue  Int?
+  textValue    String?
+
+  readingProfile ReadingProfile @relation(fields: [studentId], references: [studentId], onDelete: Cascade)
+
+  @@id([studentId, questionCode])
 }

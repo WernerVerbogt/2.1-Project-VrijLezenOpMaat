@@ -56,7 +56,8 @@ export const ModelName = {
   ProfileGenre: 'ProfileGenre',
   ProfileTheme: 'ProfileTheme',
   TeacherStudentLink: 'TeacherStudentLink',
-  ReadingListItem: 'ReadingListItem'
+  ReadingListItem: 'ReadingListItem',
+  ProfileAnswer: 'ProfileAnswer'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -132,6 +133,19 @@ export const ReadingListItemScalarFieldEnum = {
 export type ReadingListItemScalarFieldEnum = (typeof ReadingListItemScalarFieldEnum)[keyof typeof ReadingListItemScalarFieldEnum]
 
 
+export const ProfileAnswerScalarFieldEnum = {
+  studentId: 'studentId',
+  questionCode: 'questionCode',
+  answerType: 'answerType',
+  stringValue: 'stringValue',
+  stringValues: 'stringValues',
+  numberValue: 'numberValue',
+  textValue: 'textValue'
+} as const
+
+export type ProfileAnswerScalarFieldEnum = (typeof ProfileAnswerScalarFieldEnum)[keyof typeof ProfileAnswerScalarFieldEnum]
+
+
 export const SortOrder = {
   asc: 'asc',
   desc: 'desc'
@@ -146,4 +160,12 @@ export const QueryMode = {
 } as const
 
 export type QueryMode = (typeof QueryMode)[keyof typeof QueryMode]
+
+
+export const NullsOrder = {
+  first: 'first',
+  last: 'last'
+} as const
+
+export type NullsOrder = (typeof NullsOrder)[keyof typeof NullsOrder]
 
