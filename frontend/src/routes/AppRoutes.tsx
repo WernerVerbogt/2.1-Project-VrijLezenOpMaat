@@ -13,6 +13,7 @@ import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
 import LandingPage from "../pages/LandingPage";
 import CatalogPage from "../pages/CatalogPage";
+import ReadingProfilePage from "../pages/ReadingProfileFormPage";
 
 export default function AppRoutes() {
     return (
@@ -20,6 +21,7 @@ export default function AppRoutes() {
             <Routes>
 
                 <Route path="/" element={<LandingPage />} />
+
                 {/*<Route path="/" element={<Navigate to ="/" replace />} /> {/*TODO replace with login ??*/}
 
                 <Route path="/login" element={<LoginPage />} />
@@ -32,7 +34,7 @@ export default function AppRoutes() {
                     <Route element={<RoleGuard allowedRole="student" />}>
                         <Route path="/student" element={<AppLayout />}>
                             <Route index element={<PlaceholderPage title="Home" />} />
-                            <Route path="profile" element={<PlaceholderPage title="Mijn leesprofiel" />} />
+                            <Route path="profile" element={<ReadingProfilePage />} />
                             <Route path="recommendations" element={<PlaceholderPage title="Mijn leesadvies" />} />
                             <Route path="catalog" element={<CatalogPage /> } />
                             <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
