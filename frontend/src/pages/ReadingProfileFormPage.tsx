@@ -58,6 +58,11 @@ interface ReadingProfileFormState {
   answers: AnswersState;
 }
 
+interface ReadingProfileDraft {
+  form: ReadingProfileFormState,
+  currentStep: number;
+}
+
 type WizardQuestion =
   | {
       type: 'FIXED_SINGLE';
@@ -87,6 +92,11 @@ type WizardQuestion =
       questionCode: string;
       category: string;
     };
+
+
+// Temp. draft storage for the current browser tab
+const SESSION_STORAGE_KEY = 'reading-profile-draft';
+
 
 // Defines the exact order in which the questions appear in the wizard.
 
@@ -182,7 +192,9 @@ const WIZARD_QUESTIONS: WizardQuestion[] = [
 const QUESTION_COUNT = WIZARD_QUESTIONS.length;
 const REVIEW_STEP = QUESTION_COUNT;
 
+
 // Creates an empty form for a student who does not have a profile yet.
+
 function createEmptyForm(): ReadingProfileFormState {
   return {
     languageLevelCode: '',
@@ -194,7 +206,43 @@ function createEmptyForm(): ReadingProfileFormState {
   };
 }
 
+
+// Reads undefined profile from sessionStorage.
+// Invalid stored data is removed instead of breaking the form.
+
+function getStoredDraft(): ReadingProfileDraft | null {
+  const storedDraft = sessionStorage.getItem(SESSION_STORAGE_KEY);
+
+  if (!storedDraft) {
+    return null;
+  }
+
+  try {
+    const parsedDraft = JSON.parse(storedDraft) as ReadingProfileDraft;
+
+    if (!parsedDraft.form || typeof parsedDraft.currentStep !== 'number') {
+      sessionStorage.removeItem(SESSION_STORAGE_KEY);
+      return null;
+    }
+
+    return {
+      form: parsedDraft.form,
+
+      // Prevent an invalid stored step from breaking the wizard
+      currentStep: Math.min(
+        Math.max(parsedDraft.currentStep, 0),
+        REVIEW_STEP,
+      ),
+    };
+  } catch {
+    sessionStorage.removeItem(SESSION_STORAGE_KEY);
+    return null;
+  }
+}
+
+
 // Converts the backend response into editable frontend form state.
+
 function profileToForm(
   profile: ReadingProfileResponse,
 ): ReadingProfileFormState {
@@ -213,15 +261,19 @@ function profileToForm(
     languageLevelCode: profile.languageLevelCode,
     preferredLengthCode: profile.preferredLengthCode,
     readingGoalCode: profile.readingGoalCode,
+
     genreCodes: profile.genres.map(
       (genre) => genre.genreCode,
     ),
+
     themeCodes: profile.themes.map(
       (theme) => theme.themeCode,
     ),
+
     answers,
   };
 }
+
 
 export default function ReadingProfilePage() {
   const { accessToken } = useAuth();
@@ -233,13 +285,21 @@ export default function ReadingProfilePage() {
       createEmptyForm(),
     );
 
-  // Keeps the latest persisted version so FR2 changes can be cancelled.
+
+  // Keeps the latest persisted version.
+
   const [savedForm, setSavedForm] =
     useState<ReadingProfileFormState | null>(null);
 
   const [
     hasExistingProfile,
     setHasExistingProfile,
+  ] = useState(false);
+
+  // Tracks whether unsaved changes need to be stored temporarily.
+  const [
+    hasDraftChanges,
+    setHasDraftChanges,
   ] = useState(false);
 
   const [isLoading, setIsLoading] =
@@ -265,6 +325,8 @@ export default function ReadingProfilePage() {
         return;
       }
 
+      const storedDraft = getStoredDraft();
+
       try {
         const profile =
           await getReadingProfile(accessToken);
@@ -272,17 +334,33 @@ export default function ReadingProfilePage() {
         const loadedForm =
           profileToForm(profile);
 
-        setForm(loadedForm);
         setSavedForm(loadedForm);
         setHasExistingProfile(true);
+
+        // A temporary draft takes precedence over the saved database version.
+        if (storedDraft) {
+          setForm(storedDraft.form);
+          setCurrentStep(storedDraft.currentStep);
+          setHasDraftChanges(true);
+        } else {
+          setForm(loadedForm);
+        }
       } catch (error) {
         if (
           error instanceof ReadingProfileApiError &&
           error.status === 404
         ) {
-          setForm(createEmptyForm());
           setSavedForm(null);
           setHasExistingProfile(false);
+
+          // A new profile can also have an unfinished draft.
+          if (storedDraft) {
+            setForm(storedDraft.form);
+            setCurrentStep(storedDraft.currentStep);
+            setHasDraftChanges(true);
+          } else {
+            setForm(createEmptyForm());
+          }
         } else if (error instanceof Error) {
           setErrorMessage(error.message);
         } else {
@@ -298,12 +376,44 @@ export default function ReadingProfilePage() {
     void loadProfile();
   }, [accessToken]);
 
+
+  // Stores unfinished changes so they survive navigation to another page.
+  useEffect(() => {
+    if (isLoading || !hasDraftChanges) {
+      return;
+    }
+
+    const draft: ReadingProfileDraft = {
+      form,
+      currentStep,
+    };
+
+    sessionStorage.setItem(
+      SESSION_STORAGE_KEY,
+      JSON.stringify(draft),
+    );
+  }, [
+    form,
+    currentStep,
+    isLoading,
+    hasDraftChanges,
+  ]);
+
+
   function clearMessages() {
     setErrorMessage('');
     setSuccessMessage('');
   }
 
+
+  // Marks the current form as an unfinished draft.
+  function markDraftChanged() {
+    setHasDraftChanges(true);
+  }
+
+
   // Updates one of the three fixed ReadingProfile properties.
+
   function updateFixedField(
     field:
       | 'languageLevelCode'
@@ -316,14 +426,17 @@ export default function ReadingProfilePage() {
       [field]: value,
     }));
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function toggleGenre(
     genreCode: string,
   ) {
     setForm((current) => ({
       ...current,
+
       genreCodes:
         current.genreCodes.includes(genreCode)
           ? current.genreCodes.filter(
@@ -335,14 +448,17 @@ export default function ReadingProfilePage() {
             ],
     }));
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function toggleTheme(
     themeCode: string,
   ) {
     setForm((current) => ({
       ...current,
+
       themeCodes:
         current.themeCodes.includes(themeCode)
           ? current.themeCodes.filter(
@@ -354,8 +470,10 @@ export default function ReadingProfilePage() {
             ],
     }));
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function updateSingleChoice(
     questionCode: string,
@@ -363,16 +481,20 @@ export default function ReadingProfilePage() {
   ) {
     setForm((current) => ({
       ...current,
+
       answers: {
         ...current.answers,
+
         [questionCode]: {
           stringValue: value,
         },
       },
     }));
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function toggleMultipleChoice(
     questionCode: string,
@@ -396,8 +518,10 @@ export default function ReadingProfilePage() {
 
       return {
         ...current,
+
         answers: {
           ...current.answers,
+
           [questionCode]: {
             stringValues: newValues,
           },
@@ -405,8 +529,10 @@ export default function ReadingProfilePage() {
       };
     });
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function updateScale(
     questionCode: string,
@@ -414,16 +540,20 @@ export default function ReadingProfilePage() {
   ) {
     setForm((current) => ({
       ...current,
+
       answers: {
         ...current.answers,
+
         [questionCode]: {
           numberValue: value,
         },
       },
     }));
 
+    markDraftChanged();
     clearMessages();
   }
+
 
   function updateText(
     questionCode: string,
@@ -431,18 +561,23 @@ export default function ReadingProfilePage() {
   ) {
     setForm((current) => ({
       ...current,
+
       answers: {
         ...current.answers,
+
         [questionCode]: {
           textValue: value,
         },
       },
     }));
 
+    markDraftChanged();
     clearMessages();
   }
 
+
   // Finds a flexible question in the shared frontend configuration.
+
   function findProfileQuestion(
     questionCode: string,
   ) {
@@ -452,10 +587,12 @@ export default function ReadingProfilePage() {
     );
   }
 
+
   /**
    * Validates a flexible question before the student can continue.
    * Optional questions may be skipped.
    */
+
   function validateProfileQuestion(
     question: ReadingProfileQuestion,
   ): string | null {
@@ -553,6 +690,7 @@ export default function ReadingProfilePage() {
     }
   }
 
+
   function handleNext() {
     const validationError =
       validateCurrentQuestion();
@@ -563,6 +701,7 @@ export default function ReadingProfilePage() {
     }
 
     clearMessages();
+    markDraftChanged();
 
     setCurrentStep((step) =>
       Math.min(
@@ -572,8 +711,10 @@ export default function ReadingProfilePage() {
     );
   }
 
+
   function handlePrevious() {
     clearMessages();
+    markDraftChanged();
 
     setCurrentStep((step) =>
       Math.max(step - 1, 0),
@@ -672,9 +813,11 @@ export default function ReadingProfilePage() {
     };
   }
 
+
   /**
    * Saves the profile only after the student confirms the review screen.
    */
+
   async function handleSubmit(
     event: SyntheticEvent<HTMLFormElement>,
   ) {
@@ -710,6 +853,13 @@ export default function ReadingProfilePage() {
       setSavedForm(updatedForm);
       setHasExistingProfile(true);
 
+      // The profile is now saved permanently, so the temporary draft is no longer needed.
+      setHasDraftChanges(false);
+
+      sessionStorage.removeItem(
+        SESSION_STORAGE_KEY,
+      );
+
       setSuccessMessage(
         hasExistingProfile
           ? 'Je leesprofiel is bijgewerkt.'
@@ -739,10 +889,20 @@ export default function ReadingProfilePage() {
     }
 
     setCurrentStep(0);
+
+    // Cancel also removes the unfinished profile from the current browser session.
+    setHasDraftChanges(false);
+
+    sessionStorage.removeItem(
+      SESSION_STORAGE_KEY,
+    );
+
     clearMessages();
   }
 
+
   // Returns the readable label belonging to a stored code.
+
   function getOptionLabel(
     options: ReadingProfileOption[],
     value: string,
@@ -755,7 +915,9 @@ export default function ReadingProfilePage() {
     );
   }
 
+
   // Converts a flexible stored answer to readable review text.
+
   function getAnswerLabel(
     question: ReadingProfileQuestion,
   ) {
@@ -804,6 +966,7 @@ export default function ReadingProfilePage() {
         );
     }
   }
+
 
   function renderProfileQuestion(
     question: ReadingProfileQuestion,
@@ -980,6 +1143,7 @@ export default function ReadingProfilePage() {
     }
   }
 
+
   function renderCurrentQuestion() {
     const currentQuestion =
       WIZARD_QUESTIONS[currentStep];
@@ -1138,6 +1302,7 @@ export default function ReadingProfilePage() {
       }
     }
   }
+
 
   if (isLoading) {
     return (
@@ -1444,6 +1609,7 @@ export default function ReadingProfilePage() {
                 type="button"
                 onClick={() => {
                   setCurrentStep(0);
+                  markDraftChanged();
                   clearMessages();
                 }}
                 disabled={isSaving}
