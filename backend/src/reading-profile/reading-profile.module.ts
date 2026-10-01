@@ -9,16 +9,9 @@ import { ReadingProfileController } from './reading-profile.controller';
 import { ReadingProfileService } from './reading-profile.service';
 
 @Module({
-    imports: [
-        PrismaModule,
-    ],
-
-    controllers: [
-        ReadingProfileController,
-    ],
-
-    providers: [
-        ReadingProfileService,
-    ],
+    imports: [PrismaModule],
+    controllers: [ReadingProfileController],
+    providers: [ReadingProfileService],
+    exports: [ReadingProfileService]
 })
 export class ReadingProfileModule {}

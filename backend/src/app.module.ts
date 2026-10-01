@@ -13,6 +13,7 @@ import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module'
 import { BooksModule } from './books/books.module';
 import { ReadingProfileModule } from './reading-profile/reading-profile.module';
+import { RecommendationsModule } from './recommendations/recommendations.module';
 
 @Module({
   imports: [
@@ -39,7 +40,8 @@ import { ReadingProfileModule } from './reading-profile/reading-profile.module';
     AuthModule,
     BooksModule,
     PrismaModule,
-    ReadingProfileModule
+    ReadingProfileModule,
+    RecommendationsModule,
   ],
 })
 

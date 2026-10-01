@@ -344,6 +344,7 @@ export default function ReadingProfilePage() {
           setHasDraftChanges(true);
         } else {
           setForm(loadedForm);
+          setCurrentStep(REVIEW_STEP)
         }
       } catch (error) {
         if (
