@@ -1,5 +1,5 @@
 /** Recommendation Card
- * Initialises the cards which will be used to show the recommendation cards on the recommendations page.
+ * Initializes the cards which will be used to show the recommendation cards on the recommendations page.
  *  
  * The score, which represents how well a book matches the student's reading profile, is not shown here
  * as it's not useful for the user to see. It's only useful for the logic to match the book with the profile.

@@ -1,25 +1,14 @@
-/* Central place to check
-- Who has been logged in?
-- Which UserRole is assigned?
-- Is someone logged in?
-- Login and logout
+/**
+ * Creates the global authentication context.
+ *
+ * The context itself is separated from AuthProvider.tsx
+ * so React Fast Refresh can handle the provider component correctly.
+ */
 
-Global authentication state is active here for the logged-in user.
+import { createContext } from 'react';
 
-This function is separated in 3 files for fast refresh
-*/
+import type { AuthContextType } from './AuthContextType';
 
-import { createContext } from "react";
-import type { AuthUser } from "../types/auth"
-
-export interface AuthContextType {
-    user: AuthUser | null;
-    accessToken: string | null;
-    isAuthenticated: boolean;
-    login: (user: AuthUser, accessToken: string) => void;
-    logout: () => void;
-}
-
-export const AuthContext = createContext<AuthContextType | undefined> ( // No AuthProvider means context = undefined
-    undefined
+export const AuthContext = createContext<AuthContextType | undefined>(
+    undefined,
 );
