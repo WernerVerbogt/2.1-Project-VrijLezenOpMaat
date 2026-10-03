@@ -14,6 +14,7 @@ import RoleGuard from "./RoleGuard";
 import LandingPage from "../pages/LandingPage";
 import CatalogPage from "../pages/CatalogPage";
 import ReadingProfilePage from "../pages/ReadingProfileFormPage";
+import RecommendationPage from "../pages/RecommendationPage";
 
 export default function AppRoutes() {
     return (
@@ -35,7 +36,7 @@ export default function AppRoutes() {
                         <Route path="/student" element={<AppLayout />}>
                             <Route index element={<PlaceholderPage title="Home" />} />
                             <Route path="profile" element={<ReadingProfilePage />} />
-                            <Route path="recommendations" element={<PlaceholderPage title="Mijn leesadvies" />} />
+                            <Route path="recommendations" element={<RecommendationPage />} />
                             <Route path="catalog" element={<CatalogPage /> } />
                             <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
                             <Route path="teacher" element={<PlaceholderPage title="Mijn docent" />} />

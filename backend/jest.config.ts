@@ -18,6 +18,7 @@ const config: Config = {
     '^.+\\.(t|j)s$': 'ts-jest',
   },
   moduleNameMapper: pathsToModuleNameMapper(paths, { prefix: '<rootDir>/' }),
+  resolver: '<rootDir>/jest.resolver.cjs',
   collectCoverageFrom: [
     'src/**/*.(t|j)s',
     'libs/**/*.(t|j)s',

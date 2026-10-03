@@ -1,6 +1,6 @@
-// Handles reading profile business logic and persistence.
-// The service validates profile answers, retrieves existing profiles,
-// and stores profile changes atomically in PostgreSQL using Prisma.
+/**  Handles reading profile business logic and persistence.
+ * The service validates profile answers, retrieves existing profiles,
+ * and stores profile changes atomically in PostgreSQL using Prisma. */
 
 import {
   BadRequestException,
@@ -38,7 +38,7 @@ export class ReadingProfileService {
     });
 
     if (!profile) {
-      throw new NotFoundException('Reading profile not found.');
+      throw new NotFoundException('Geen leesprofiel gevonden.');
     }
 
     return profile;
