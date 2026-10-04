@@ -1,4 +1,7 @@
-// Reads all the books imported in the MongoDB
+/** 
+ * Reads all the books imported in the MongoDB and converts original catalog fields
+ * into normalized format that is used by the application.
+ */
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel, raw } from '@nestjs/mongoose';
@@ -18,8 +21,10 @@ export class BooksService {
     async findAll() {
         const books = await this.bookModel.find().lean().exec(); // finds all the books, return JSON objects (lean)
 
-        return books.map((book) => {
-            const rawBook = book as unknown as Record<string, unknown>; // TODO make type safer | Handle it as unknown for now as it doesn't define the fields now
+        return books.map((book) => {  
+            // Imported MongoDB / Document DB is intentionally flexible because the original
+            // catalog was imported from an external source.
+            const rawBook = book as unknown as Record<string, unknown>;
 
             return this.mapBook(rawBook);
         });
@@ -35,6 +40,7 @@ export class BooksService {
             materialType: this.toStringValue(rawBook['Type materiaal']),
             level: this.toStringValue(rawBook['Niveau']),
             themes: this.normalizeThemes(rawBook['Themas_boek']),
+            length: this.toStringValue(rawBook['Lengte']),
         };
     }
 

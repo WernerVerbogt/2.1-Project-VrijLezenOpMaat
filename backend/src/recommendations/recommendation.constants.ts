@@ -7,6 +7,7 @@ export const RECOMMENDATION_LIMIT = 3;
 export const RECOMMENDATION_WEIGHTS = {
     LEVEL: 3,
     THEME: 2,
+    LENGTH: 2,
     FORMAT: 1,
 } as const;
 

@@ -1,3 +1,7 @@
+/**
+ * 
+ */
+
 import { Injectable } from '@nestjs/common';
 
 import { BooksService } from '../books/books.service';
@@ -51,6 +55,7 @@ export class RecommendationsService {
         book,
         profile.languageLevelCode,
         profile.themes,
+        profile.preferredLengthCode,
         preferredFormat,
       ),
     );
@@ -63,15 +68,20 @@ export class RecommendationsService {
     book: CatalogBook,
     languageLevelCode: string,
     profileThemes: ProfileTheme[],
+    preferredLengthCode: string | null,
     preferredFormat: string | null,
   ): BookRecommendation {
     const reasons: RecommendationReason[] = [];
 
     this.addLevelMatchReason(book, languageLevelCode, reasons);
     this.addThemeMatchReasons(book, profileThemes, reasons);
+    this.addLengthMatchReason(book, preferredLengthCode, reasons);
     this.addFormatMatchReason(book, preferredFormat, reasons);
 
-    const score = reasons.reduce((total, reason) => total + reason.points,0,);
+    const score = reasons.reduce(
+      (total, reason) => total + reason.points,
+      0,
+    );
 
     return {
       bookId: book.id,
@@ -97,7 +107,9 @@ export class RecommendationsService {
 
     const catalogLevels = this.extractCatalogLevels(book.level);
 
-    const hasLevelMatch = allowedLevels.some((allowedLevel) => catalogLevels.includes(allowedLevel),);
+    const hasLevelMatch = allowedLevels.some((allowedLevel) =>
+      catalogLevels.includes(allowedLevel),
+    );
 
     if (!hasLevelMatch) {
       return;
@@ -122,7 +134,8 @@ export class RecommendationsService {
     );
 
     for (const profileTheme of profileThemes) {
-      const catalogTerm = PROFILE_THEME_TO_CATALOG_TERM[profileTheme.themeCode];
+      const catalogTerm =
+        PROFILE_THEME_TO_CATALOG_TERM[profileTheme.themeCode];
 
       if (!catalogTerm) {
         continue;
@@ -146,6 +159,33 @@ export class RecommendationsService {
         points: RECOMMENDATION_WEIGHTS.THEME,
       });
     }
+  }
+
+  // Checks whether the book length matches the length selected in the reading profile.
+  private addLengthMatchReason(
+    book: CatalogBook,
+    preferredLengthCode: string | null,
+    reasons: RecommendationReason[],
+  ): void {
+    // Books without length metadata remain valid recommendations,
+    // but they do not receive points for a length match.
+    if (!preferredLengthCode || !book.length) {
+      return;
+    }
+
+    const hasLengthMatch =
+      book.length.trim().toUpperCase() ===
+      preferredLengthCode.trim().toUpperCase();
+
+    if (!hasLengthMatch) {
+      return;
+    }
+
+    reasons.push({
+      type: 'LENGTH',
+      message: 'De lengte van dit boek past bij jouw leesvoorkeur.',
+      points: RECOMMENDATION_WEIGHTS.LENGTH,
+    });
   }
 
   // Checks whether the selected preferred format corresponds with the material type stored in the book catalog.
@@ -196,8 +236,8 @@ export class RecommendationsService {
     return matches ?? [];
   }
 
-  // Selects the highest scoring books. If fewer than three books have a positive score, additional
-  // catalog books are used to return at least 3 suggestions.
+  // Selects the highest scoring books. If fewer than three books have a positive score,
+  // additional catalog books are used to return at least 3 suggestions.
   private selectRecommendations(
     recommendations: BookRecommendation[],
   ): BookRecommendation[] {
@@ -219,7 +259,9 @@ export class RecommendationsService {
     }
 
     const selectedIds = new Set(
-      matchedRecommendations.map((recommendation) => recommendation.bookId),
+      matchedRecommendations.map(
+        (recommendation) => recommendation.bookId,
+      ),
     );
 
     const fallbackRecommendations = sortedRecommendations
@@ -246,7 +288,8 @@ export class RecommendationsService {
     ].slice(0, RECOMMENDATION_LIMIT);
   }
 
-  // Normalizes textual catalog data so comparisons are case-insensitive and unaffected by surrounding whitespace.
+  // Normalizes textual catalog data so comparisons are case-insensitive
+  // and unaffected by surrounding whitespace.
   private normalizeText(value: string): string {
     return value.trim().toLowerCase();
   }

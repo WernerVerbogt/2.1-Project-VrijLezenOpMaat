@@ -12,4 +12,5 @@ export interface CatalogBook {
     materialType: string;
     level: string;
     themes: string[];
+    length: string;
 }

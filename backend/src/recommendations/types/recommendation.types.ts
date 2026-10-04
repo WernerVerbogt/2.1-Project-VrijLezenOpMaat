@@ -5,6 +5,7 @@
 export type RecommendationReasonType =
  | 'LEVEL'
  | 'THEME'
+ | 'LENGTH'
  | 'FORMAT'
  | 'FALLBACK';
 
