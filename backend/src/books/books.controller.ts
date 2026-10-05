@@ -1,3 +1,7 @@
+/**
+ * Handles requests when the user is browsing in the book catalog.
+ */
+
 import { Controller, Get, Query } from '@nestjs/common';
 
 import { Public } from '../auth/decorators/public.decorators';
@@ -13,6 +17,6 @@ export class BooksController {
   @Public()
   @Get()
   findPaginated(@Query() query: GetBooksQueryDto) {
-    return this.booksService.findPaginated(query.page, query.limit);
+    return this.booksService.findPaginated(query);
   }
 }

@@ -24,10 +24,10 @@ export class GetBooksQueryDto {
     @IsString()
     level?: string;
 
-    // The catalog stores genres (themes) in the Themas_boek field.
+    // The catalog stores theme(s)/subject in the Themas_boek field.
     @IsOptional()
     @IsString()
-    genre?: string;
+    theme?: string;
 
     // Uses the same length codes as the reading profile
     @IsOptional()
