@@ -1,0 +1,158 @@
+/* Styles the reading list page and its loading skeletons. */
+
+.reading-list-page {
+    width: min(1100px, 100%);
+    margin: 0 auto;
+    padding: 2rem 1rem;
+}
+
+.reading-list-header {
+    margin-bottom: 2rem;
+}
+
+.reading-list-header h1 {
+    margin-bottom: 0.5rem;
+}
+
+.reading-list-items {
+    display: grid;
+    gap: 1.25rem;
+}
+
+.reading-list-card {
+    padding: 1.5rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.75rem;
+    background: #ffffff;
+}
+
+.reading-list-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+.reading-list-details div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.35rem;
+    text-align: center;
+}
+
+.reading-list-details dt {
+    font-weight: 600;
+}
+
+.reading-list-details dd {
+    margin: 0;
+}
+
+.reading-list-actions {
+    margin-top: 1.25rem;
+}
+
+.reading-list-error {
+    margin-bottom: 1rem;
+}
+
+.reading-list-empty {
+    padding: 2rem;
+    border: 1px solid #d9d9d9;
+    border-radius: 0.75rem;
+}
+
+/* Skeleton loading */
+
+.reading-list-skeleton {
+    overflow: hidden;
+}
+
+.skeleton-title,
+.skeleton-author,
+.skeleton-line,
+.skeleton-detail,
+.skeleton-button {
+    position: relative;
+    overflow: hidden;
+    border-radius: 0.35rem;
+    background: #e6e6e6;
+}
+
+.skeleton-title {
+    width: 45%;
+    height: 1.6rem;
+    margin-bottom: 0.75rem;
+}
+
+.skeleton-author {
+    width: 30%;
+    height: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+.skeleton-line {
+    width: 100%;
+    height: 0.9rem;
+    margin-bottom: 0.5rem;
+}
+
+.skeleton-line-short {
+    width: 65%;
+}
+
+.skeleton-details {
+    display: grid;
+    grid-template-columns: repeat(
+        auto-fit,
+        minmax(120px, 1fr)
+    );
+    gap: 1rem;
+    margin-top: 1.25rem;
+}
+
+.skeleton-detail {
+    height: 2.5rem;
+}
+
+.skeleton-button {
+    width: 180px;
+    height: 2.5rem;
+    margin-top: 1.25rem;
+}
+
+.skeleton-title::after,
+.skeleton-author::after,
+.skeleton-line::after,
+.skeleton-detail::after,
+.skeleton-button::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: translateX(-100%);
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.65),
+        transparent
+    );
+    animation: reading-list-skeleton-loading
+        1.4s infinite;
+}
+
+@keyframes reading-list-skeleton-loading {
+    100% {
+        transform: translateX(100%);
+    }
+}
+
+@media (prefers-reduced-motion: reduce) {
+    .skeleton-title::after,
+    .skeleton-author::after,
+    .skeleton-line::after,
+    .skeleton-detail::after,
+    .skeleton-button::after {
+        animation: none;
+    }
+}

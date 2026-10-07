@@ -1,23 +1,29 @@
-/** 
- * Displays catalog page with all the books available.
- * The user can browse, filter and navigate through paginated book results.
+/**
+ * Displays the catalog page with all available books.
+ * The student can browse, filter, paginate and add books
+ * to the personal reading list.
  */
 
 import { useEffect, useState } from 'react';
+import { useAuth } from '../context/useAuth';
+import { getBooks, getBookThemes } from '../services/booksApi';
+import { addReadingListItem, getReadingList, ReadingListApiError } from '../services/readingListService';
 
 import BookCard from '../components/books/BookCard';
-import { getBooks, getBookThemes } from '../services/booksApi';
 import type { Book } from '../types/book';
 
 import './css/CatalogPage.css';
+import Button from '../components/ui/Button';
 
 const PAGE_SIZE = 12;
 
 export default function CatalogPage() {
-    const [books, setBooks] = useState<Book[]>([]);
+    const { accessToken } = useAuth();
 
+    const [books, setBooks] = useState<Book[]>([]);
     const [page, setPage] = useState(1);
     const [total, setTotal] = useState(0);
+
     const [totalPages, setTotalPages] = useState(0);
 
     // Values currently selected inside the filter form.
@@ -25,7 +31,7 @@ export default function CatalogPage() {
     const [theme, setTheme] = useState('');
     const [length, setLength] = useState('');
 
-    // Values that are actually applied to the catalog request.
+    // Values actually applied to the catalog request.
     const [appliedLevel, setAppliedLevel] = useState('');
     const [appliedTheme, setAppliedTheme] = useState('');
     const [appliedLength, setAppliedLength] = useState('');
@@ -34,6 +40,13 @@ export default function CatalogPage() {
     const [isLoading, setIsLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
 
+    // Stores books that are already part of the student's reading list.
+    const [ readingListBookIds, setReadingListBookIds] = useState<string[]>([]);
+
+    // Stores books that currently have an add request running.
+    const [addingBookIds, setAddingBookIds] = useState<string[]>([]);
+    const [readingListError, setReadingListError] = useState<string | null>(null);
+
     // Controls the filter panel on smaller screens.
     const [showMobileFilters, setShowMobileFilters] = useState(false);
 
@@ -41,15 +54,52 @@ export default function CatalogPage() {
     useEffect(() => {
         async function loadThemes() {
             try {
-                const themes = await getBookThemes();
+                const themes =
+                    await getBookThemes();
+
                 setAvailableThemes(themes);
             } catch {
-                setError('Themafilters konden niet worden geladen.');
+                setError(
+                    'Themafilters konden niet worden geladen.',
+                );
             }
         }
 
-        loadThemes();
+        void loadThemes();
     }, []);
+
+    // Loads the student's current reading list once.
+    useEffect(() => {
+        if (!accessToken) {
+            return;
+        }
+
+        const token = accessToken;
+        let cancelled = false;
+
+        async function loadReadingList() {
+            try {
+                const items =
+                    await getReadingList(token);
+
+                if (!cancelled) {
+                    setReadingListBookIds(
+                        items.map(
+                            (item) => item.id,
+                        ),
+                    );
+                }
+            } catch {
+                // The catalog can still be used if reading-list status fails to load.
+            }
+        }
+
+        void loadReadingList();
+
+        return () => {
+            cancelled = true;
+        };
+    }, [accessToken]);
 
     // Reloads books when pagination or applied filters change.
     useEffect(() => {
@@ -58,25 +108,30 @@ export default function CatalogPage() {
             setError(null);
 
             try {
-                const data = await getBooks({
-                    page,
-                    limit: PAGE_SIZE,
-                    level: appliedLevel,
-                    theme: appliedTheme,
-                    length: appliedLength,
-                });
+                const data =
+                    await getBooks({
+                        page,
+                        limit: PAGE_SIZE,
+                        level: appliedLevel,
+                        theme: appliedTheme,
+                        length: appliedLength,
+                    });
 
                 setBooks(data.items);
                 setTotal(data.total);
-                setTotalPages(data.totalPages);
+                setTotalPages(
+                    data.totalPages,
+                );
             } catch {
-                setError('Boekenlijst kon niet worden geladen.');
+                setError(
+                    'Boekenlijst kon niet worden geladen.',
+                );
             } finally {
                 setIsLoading(false);
             }
         }
 
-        loadBooks();
+        void loadBooks();
     }, [
         page,
         appliedLevel,
@@ -84,8 +139,90 @@ export default function CatalogPage() {
         appliedLength,
     ]);
 
+    // Adds one catalog book to the student's personal reading list.
+    async function handleAddToReadingList(
+        bookId: string,
+    ) {
+        if (!accessToken) {
+            setReadingListError(
+                'Je bent niet ingelogd.',
+            );
+            return;
+        }
+
+        // Prevent an unnecessary second request.
+        if (
+            readingListBookIds.includes(
+                bookId,
+            ) ||
+            addingBookIds.includes(bookId)
+        ) {
+            return;
+        }
+
+        setReadingListError(null);
+
+        setAddingBookIds((current) => [
+            ...current,
+            bookId,
+        ]);
+
+        try {
+            await addReadingListItem(
+                accessToken,
+                {
+                    bookId,
+                },
+            );
+
+            setReadingListBookIds(
+                (current) =>
+                    current.includes(bookId)
+                        ? current
+                        : [
+                            ...current,
+                            bookId,
+                        ],
+            );
+        } catch (error) {
+
+            // A conflict means that the book already exists on the reading list.
+            if (
+                error instanceof
+                    ReadingListApiError &&
+                error.status === 409
+            ) {
+                setReadingListBookIds(
+                    (current) =>
+                        current.includes(bookId)
+                            ? current
+                            : [
+                                ...current,
+                                bookId,
+                            ],
+                );
+
+                return;
+            }
+
+            setReadingListError(
+                error instanceof Error
+                    ? error.message
+                    : 'Het boek kon niet aan je leeslijst worden toegevoegd.',
+            );
+        } finally {
+            setAddingBookIds((current) =>
+                current.filter(
+                    (id) => id !== bookId,
+                ),
+            );
+        }
+    }
+
     // Applies all selected filters at once.
-    function applyFilters(event: React.FormEvent<HTMLFormElement>) {
+    function applyFilters(
+        event: React.FormEvent<HTMLFormElement>,
+    ) {
         event.preventDefault();
 
         setAppliedLevel(level);
@@ -115,17 +252,23 @@ export default function CatalogPage() {
                 <h1>Catalogus</h1>
 
                 <p>
-                    Blader door de catalogus of gebruik de filters om
-                    gericht leesmateriaal te vinden.
+                    Blader door de catalogus of
+                    gebruik de filters om gericht
+                    leesmateriaal te vinden.
                 </p>
             </header>
 
             <button
                 type="button"
                 className="catalog-mobile-filter-button"
-                aria-expanded={showMobileFilters}
+                aria-expanded={
+                    showMobileFilters
+                }
                 onClick={() =>
-                    setShowMobileFilters((current) => !current)
+                    setShowMobileFilters(
+                        (current) =>
+                            !current,
+                    )
                 }
             >
                 {showMobileFilters
@@ -135,14 +278,18 @@ export default function CatalogPage() {
 
             <div className="catalog-layout">
                 <aside
-                    className={`catalog-filter-panel ${
-                        showMobileFilters
-                            ? 'catalog-filter-panel--open'
-                            : ''
-                    }`}
+                    className={
+                        `catalog-filter-panel ${
+                            showMobileFilters
+                                ? 'catalog-filter-panel--open'
+                                : ''
+                        }`
+                    }
                     aria-labelledby="catalog-filter-heading"
                 >
-                    <h2 id="catalog-filter-heading">Filters</h2>
+                    <h2 id="catalog-filter-heading">
+                        Filters
+                    </h2>
 
                     <form
                         className="catalog-filter-form"
@@ -156,14 +303,31 @@ export default function CatalogPage() {
                             <select
                                 id="level-filter"
                                 value={level}
-                                onChange={(event) =>
-                                    setLevel(event.target.value)
+                                onChange={(
+                                    event,
+                                ) =>
+                                    setLevel(
+                                        event
+                                            .target
+                                            .value,
+                                    )
                                 }
                             >
-                                <option value="">Alle niveaus</option>
-                                <option value="1F">1F</option>
-                                <option value="2F">2F</option>
-                                <option value="3F">3F</option>
+                                <option value="">
+                                    Alle niveaus
+                                </option>
+
+                                <option value="1F">
+                                    1F
+                                </option>
+
+                                <option value="2F">
+                                    2F
+                                </option>
+
+                                <option value="3F">
+                                    3F
+                                </option>
                             </select>
                         </div>
 
@@ -175,19 +339,35 @@ export default function CatalogPage() {
                             <select
                                 id="theme-filter"
                                 value={theme}
-                                onChange={(event) =>
-                                    setTheme(event.target.value)
+                                onChange={(
+                                    event,
+                                ) =>
+                                    setTheme(
+                                        event
+                                            .target
+                                            .value,
+                                    )
                                 }
                             >
-                                <option value="">Alle thema's</option>
+                                <option value="">
+                                    Alle thema's
+                                </option>
 
                                 {availableThemes.map(
-                                    (availableTheme) => (
+                                    (
+                                        availableTheme,
+                                    ) => (
                                         <option
-                                            key={availableTheme}
-                                            value={availableTheme}
+                                            key={
+                                                availableTheme
+                                            }
+                                            value={
+                                                availableTheme
+                                            }
                                         >
-                                            {availableTheme}
+                                            {
+                                                availableTheme
+                                            }
                                         </option>
                                     ),
                                 )}
@@ -202,34 +382,46 @@ export default function CatalogPage() {
                             <select
                                 id="length-filter"
                                 value={length}
-                                onChange={(event) =>
-                                    setLength(event.target.value)
+                                onChange={(
+                                    event,
+                                ) =>
+                                    setLength(
+                                        event
+                                            .target
+                                            .value,
+                                    )
                                 }
                             >
-                                <option value="">Alle lengtes</option>
-                                <option value="SHORT">Kort</option>
+                                <option value="">
+                                    Alle lengtes
+                                </option>
+
+                                <option value="SHORT">
+                                    Kort
+                                </option>
+
                                 <option value="MEDIUM">
                                     Gemiddeld
                                 </option>
-                                <option value="LONG">Lang</option>
+
+                                <option value="LONG">
+                                    Lang
+                                </option>
                             </select>
                         </div>
 
                         <div className="catalog-filter-actions">
-                            <button
-                                type="submit"
-                                className="catalog-button catalog-button-primary"
-                            >
+                            <Button type="submit">
                                 Filters toepassen
-                            </button>
+                            </Button>
 
-                            <button
+                            <Button
                                 type="button"
-                                className="catalog-button catalog-button-secondary"
+                                variant='secondary'
                                 onClick={resetFilters}
                             >
                                 Reset filters
-                            </button>
+                            </Button>
                         </div>
                     </form>
                 </aside>
@@ -241,21 +433,38 @@ export default function CatalogPage() {
                                 {isLoading
                                     ? 'Catalogus laden...'
                                     : `${total} ${
-                                          total === 1
-                                              ? 'boek gevonden'
-                                              : 'boeken gevonden'
-                                      }`}
+                                        total === 1
+                                            ? 'boek gevonden'
+                                            : 'boeken gevonden'
+                                    }`}
                             </h2>
 
                             {!isLoading &&
                                 !error &&
-                                totalPages > 0 && (
+                                totalPages >
+                                    0 && (
                                     <p>
-                                        Pagina {page} van {totalPages}
+                                        Pagina{' '}
+                                        {page}{' '}
+                                        van{' '}
+                                        {
+                                            totalPages
+                                        }
                                     </p>
                                 )}
                         </div>
                     </div>
+
+                    {readingListError && (
+                        <div
+                            className="catalog-status catalog-error"
+                            role="alert"
+                        >
+                            {
+                                readingListError
+                            }
+                        </div>
+                    )}
 
                     {error && (
                         <div
@@ -268,7 +477,8 @@ export default function CatalogPage() {
 
                     {isLoading && (
                         <div className="catalog-status">
-                            Boekenlijst wordt geladen...
+                            Boekenlijst wordt
+                            geladen...
                         </div>
                     )}
 
@@ -276,26 +486,51 @@ export default function CatalogPage() {
                         !error &&
                         books.length === 0 && (
                             <div className="catalog-status">
-                                <h3>Geen boeken gevonden</h3>
+                                <h3>
+                                    Geen boeken
+                                    gevonden
+                                </h3>
 
                                 <p>
-                                    Pas één of meerdere filters aan en
-                                    probeer opnieuw.
+                                    Pas één of
+                                    meerdere
+                                    filters aan en
+                                    probeer
+                                    opnieuw.
                                 </p>
                             </div>
                         )}
 
                     {!isLoading &&
                         !error &&
-                        books.length > 0 && (
+                        books.length >
+                            0 && (
                             <>
                                 <div className="catalog-grid">
-                                    {books.map((book) => (
-                                        <BookCard
-                                            key={book.id}
-                                            book={book}
-                                        />
-                                    ))}
+                                    {books.map(
+                                        (
+                                            book,
+                                        ) => (
+                                            <BookCard
+                                                key={
+                                                    book.id
+                                                }
+                                                book={
+                                                    book
+                                                }
+                                                onAdd={
+                                                    handleAddToReadingList
+                                                }
+                                                addLabel="Toevoegen aan leeslijst"
+                                                isAdding={addingBookIds.includes(
+                                                    book.id,
+                                                )}
+                                                isAdded={readingListBookIds.includes(
+                                                    book.id,
+                                                )}
+                                            />
+                                        ),
+                                    )}
                                 </div>
 
                                 <nav
@@ -304,11 +539,17 @@ export default function CatalogPage() {
                                 >
                                     <button
                                         type="button"
-                                        disabled={page <= 1}
+                                        disabled={
+                                            page <=
+                                            1
+                                        }
                                         onClick={() =>
                                             setPage(
-                                                (currentPage) =>
-                                                    currentPage - 1,
+                                                (
+                                                    currentPage,
+                                                ) =>
+                                                    currentPage -
+                                                    1,
                                             )
                                         }
                                     >
@@ -320,18 +561,25 @@ export default function CatalogPage() {
                                     </span>
 
                                     <span>
-                                        van {totalPages}
+                                        van{' '}
+                                        {
+                                            totalPages
+                                        }
                                     </span>
 
                                     <button
                                         type="button"
                                         disabled={
-                                            page >= totalPages
+                                            page >=
+                                            totalPages
                                         }
                                         onClick={() =>
                                             setPage(
-                                                (currentPage) =>
-                                                    currentPage + 1,
+                                                (
+                                                    currentPage,
+                                                ) =>
+                                                    currentPage +
+                                                    1,
                                             )
                                         }
                                     >

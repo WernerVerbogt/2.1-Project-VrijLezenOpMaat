@@ -97,40 +97,6 @@
   gap: 0.6rem;
 }
 
-.catalog-button {
-  min-height: 42px;
-
-  padding: 0.5rem 0.9rem;
-
-  border: 1px solid transparent;
-  border-radius: 0.35rem;
-
-  font-weight: 600;
-
-  cursor: pointer;
-}
-
-.catalog-button-primary {
-  color: #ffffff;
-  background: var(--color-primary);
-}
-
-.catalog-button-primary:hover {
-  background: var(--color-primary-dark);
-}
-
-.catalog-button-secondary {
-  color: var(--color-primary-dark);
-  background: var(--color-surface);
-
-  border-color: var(--color-border-dark);
-}
-
-.catalog-button-secondary:hover {
-  background: var(--color-primary-light);
-}
-
-
 /* Catalog results */
 
 .catalog-content {

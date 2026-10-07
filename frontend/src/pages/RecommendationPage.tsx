@@ -1,15 +1,15 @@
-/** Recommendation Page
- * will show the recommendations for the student based of its profile, 
- * which is filled in in the Reading Profile Form.
- * The cards will be set up in the RecommendationCard.tsx file
+/**
+ * Recommendation Page
+ * Shows personal recommendations based on the student's reading profile.
+ * Students can add recommended books to their personal reading list.
  */
 
 import { useEffect, useState } from 'react';
-
-import RecommendationCard from './RecommendationCard';
 import { useAuth } from '../context/useAuth';
 import { getRecommendations } from '../services/recommendationService';
+import { addReadingListItem, getReadingList, ReadingListApiError } from '../services/readingListService';
 
+import RecommendationCard from './RecommendationCard';
 import type { BookRecommendation } from '../types/recommendation';
 
 import './css/RecommendationPage.css';
@@ -17,11 +17,17 @@ import './css/RecommendationPage.css';
 export default function RecommendationPage() {
     const { accessToken } = useAuth();
 
-    const [recommendations, setRecommendations] =
-        useState<BookRecommendation[]>([]);
+    const [recommendations, setRecommendations] = useState<BookRecommendation[]>([]);
+
+    const [readingListBookIds, setReadingListBookIds] = useState<string[]>([]);
+
+    const [addingBookIds, setAddingBookIds] = useState<string[]>([]);
 
     const [isLoading, setIsLoading] = useState(true);
+
     const [error, setError] = useState<string | null>(null);
+
+    const [readingListError, setReadingListError] = useState<string | null>(null);
 
     // Load recommendations when the page is mounted
     // or when the authentication token changes.
@@ -30,33 +36,24 @@ export default function RecommendationPage() {
             return;
         }
 
-        // Store the validated token as a definite string.
         const token = accessToken;
-
         let cancelled = false;
 
         // Fetch personalized recommendations from the backend.
         async function fetchRecommendations() {
             try {
-                const response = await getRecommendations(token);
+                const response =
+                    await getRecommendations(token);
 
-                // Only update state if the component is still mounted.
                 if (!cancelled) {
-                    // Protect the UI against an unexpected API response.
-                    setRecommendations(
-                        Array.isArray(response.recommendations)
-                            ? response.recommendations
-                            : [],
-                    );
+                    setRecommendations(Array.isArray(response.recommendations) ? response.recommendations : []);
 
                     setError(null);
                 }
             } catch (error) {
                 if (!cancelled) {
                     const message =
-                        error instanceof Error
-                            ? error.message
-                            : 'Het ophalen van de leesadviezen is mislukt.';
+                        error instanceof Error ? error.message : 'Het ophalen van de leesadviezen is mislukt.';
 
                     setError(message);
                 }
@@ -67,15 +64,34 @@ export default function RecommendationPage() {
             }
         }
 
-        void fetchRecommendations();
+        // Load existing reading-list items so already saved books
+        // can immediately be shown as added.
+        async function fetchReadingList() {
+            try {
+                const items =
+                    await getReadingList(token);
 
-        // Prevent state updates after the component has been unmounted.
+                if (!cancelled) {
+                    setReadingListBookIds(
+                        items.map(
+                            (item) => item.id,
+                        ),
+                    );
+                }
+            } catch {
+                // Recommendations can still be used if this request fails.
+            }
+        }
+
+        void fetchRecommendations();
+        void fetchReadingList();
+
         return () => {
             cancelled = true;
         };
     }, [accessToken]);
 
-    // Retry the request manually after an error.
+    // Retry the recommendation request manually after an error.
     async function handleRetry() {
         if (!accessToken) {
             return;
@@ -87,21 +103,82 @@ export default function RecommendationPage() {
 
             const response = await getRecommendations(accessToken);
 
-            // Protect the UI against an unexpected API response.
-            setRecommendations(
-                Array.isArray(response.recommendations)
-                    ? response.recommendations
-                    : [],
+            setRecommendations(Array.isArray(response.recommendations) ? response.recommendations : [],
             );
         } catch (error) {
             const message =
-                error instanceof Error
-                    ? error.message
-                    : 'Het ophalen van de leesadviezen is mislukt.';
+                error instanceof Error ? error.message : 'Het ophalen van de leesadviezen is mislukt.';
 
             setError(message);
         } finally {
             setIsLoading(false);
+        }
+    }
+
+    // Adds one recommended book to the student's reading list.
+    async function handleAddToReadingList(
+        bookId: string,
+    ) {
+        if (!accessToken) {
+            setReadingListError(
+                'Je bent niet ingelogd.',
+            );
+            return;
+        }
+
+        setReadingListError(null);
+
+        setAddingBookIds((current) => [
+            ...current,
+            bookId,
+        ]);
+
+        try {
+            await addReadingListItem(
+                accessToken,
+                {
+                    bookId,
+                },
+            );
+
+            setReadingListBookIds(
+                (current) =>
+                    current.includes(bookId)
+                        ? current
+                        : [
+                            ...current,
+                            bookId,
+                        ],
+            );
+        } catch (error) {
+
+            // A conflict means the book was already saved earlier.
+            if (
+                error instanceof
+                    ReadingListApiError &&
+                error.status === 409
+            ) {
+                setReadingListBookIds(
+                    (current) =>
+                        current.includes(bookId)
+                            ? current
+                            : [
+                                ...current,
+                                bookId,
+                            ],
+                );
+
+                return;
+            }
+
+            setReadingListError(error instanceof Error ? error.message : 'Het boek kon niet aan je leeslijst worden toegevoegd.');
+
+        } finally {
+            setAddingBookIds((current) =>
+                current.filter(
+                    (id) => id !== bookId,
+                ),
+            );
         }
     }
 
@@ -126,12 +203,14 @@ export default function RecommendationPage() {
             >
                 <h1>Jouw leesadvies</h1>
 
-                <p>Je persoonlijke leesadviezen worden geladen...</p>
+                <p>
+                    Je persoonlijke leesadviezen worden geladen...
+                </p>
             </section>
         );
     }
 
-    // Show an accessible error message and allow the user to retry.
+    // Show an accessible error message and allow retry.
     if (error) {
         return (
             <section className="recommendations-page">
@@ -145,7 +224,9 @@ export default function RecommendationPage() {
 
                     <button
                         type="button"
-                        onClick={() => void handleRetry()}
+                        onClick={() =>
+                            void handleRetry()
+                        }
                     >
                         Opnieuw proberen
                     </button>
@@ -161,30 +242,60 @@ export default function RecommendationPage() {
                 <h1>Jouw leesadvies</h1>
 
                 <p>
-                    Er zijn op dit moment geen passende leesadviezen beschikbaar.
+                    Er zijn op dit moment geen
+                    passende leesadviezen
+                    beschikbaar.
                 </p>
             </section>
         );
     }
 
-    // Render the personalized recommendations.
     return (
         <section className="recommendations-page">
             <header className="recommendations-page__header">
                 <h1>Jouw leesadvies</h1>
 
                 <p>
-                    Deze boeken zijn geselecteerd op basis van jouw leesprofiel.
+                    Deze boeken zijn geselecteerd
+                    op basis van jouw leesprofiel.
                 </p>
             </header>
 
+            {readingListError && (
+                <p
+                    className="recommendations-page__error"
+                    role="alert"
+                >
+                    {readingListError}
+                </p>
+            )}
+
             <div className="recommendations-page__grid">
-                {recommendations.map((recommendation) => (
-                    <RecommendationCard
-                        key={recommendation.bookId}
-                        recommendations={recommendation}
-                    />
-                ))}
+                {recommendations.map(
+                    (recommendation) => (
+                        <RecommendationCard
+                            key={
+                                recommendation.bookId
+                            }
+                            recommendations={
+                                recommendation
+                            }
+                            isAdding = {
+                                addingBookIds.includes(
+                                    recommendation.bookId,
+                                )
+                            }
+                            isOnReadingList = {
+                                readingListBookIds.includes(
+                                    recommendation.bookId,
+                                )
+                            }
+                            onAddToReadingList = {
+                                handleAddToReadingList
+                            }
+                        />
+                    ),
+                )}
             </div>
         </section>
     );

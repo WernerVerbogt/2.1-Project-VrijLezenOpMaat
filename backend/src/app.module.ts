@@ -4,8 +4,8 @@
  * */
 
 import { Module } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
+//import { AppController } from './app.controller';
+//import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -14,6 +14,7 @@ import { AuthModule } from './auth/auth.module'
 import { BooksModule } from './books/books.module';
 import { ReadingProfileModule } from './reading-profile/reading-profile.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
+import { ReadingListModule } from './reading-list/reading-list.module';
 
 @Module({
   imports: [
@@ -42,6 +43,7 @@ import { RecommendationsModule } from './recommendations/recommendations.module'
     PrismaModule,
     ReadingProfileModule,
     RecommendationsModule,
+    ReadingListModule,
   ],
 })
 

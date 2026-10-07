@@ -1,11 +1,11 @@
-/** 
- * Reads all the books imported in the MongoDB and converts original catalog fields
- * into normalized format that is used by the application.
+/**
+ * Reads books imported into book database and converts the original catalog fields
+ * into the normalized format used by the application.
  */
 
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { Model, Types } from 'mongoose';
 
 import { GetBooksQueryDto } from './dto/get-books-query.dto';
 import { Book } from './schemas/book.schema';
@@ -30,6 +30,56 @@ export class BooksService {
         });
     }
 
+    // Returns one catalog book by its bookId
+    async findById(bookId: string): Promise<CatalogBook | null> {
+
+        // Prevent the database from throwing a CastError for an invalid bookId.
+        if (!Types.ObjectId.isValid(bookId)) {
+            return null;
+        }
+
+        const book = await this.bookModel
+            .findById(bookId)
+            .lean()
+            .exec();
+
+        if (!book) {
+            return null;
+        }
+
+        const rawBook = book as unknown as Record<string, unknown>;
+
+        return this.mapBook(rawBook);
+    }
+
+    // Returns all catalog books matching the supplied bookId
+    async findByIds(bookIds: string[]): Promise<CatalogBook[]> {
+
+        // Only valid bookIds are sent to the database
+        const validBookIds = bookIds.filter((bookId) =>
+            Types.ObjectId.isValid(bookId),
+        );
+
+        if (validBookIds.length === 0) {
+            return [];
+        }
+
+        const books = await this.bookModel
+            .find({
+                _id: {
+                    $in: validBookIds,
+                },
+            })
+            .lean()
+            .exec();
+
+        return books.map((book) => {
+            const rawBook = book as unknown as Record<string, unknown>;
+
+            return this.mapBook(rawBook);
+        });
+    }
+
     // Returns one filtered and paginated catalog page.
     async findPaginated(
         query: GetBooksQueryDto,
@@ -38,7 +88,7 @@ export class BooksService {
 
         const skip = (page - 1) * limit;
 
-        // Build the MongoDB filter dynamically.
+        // Build the book database filter dynamically.
         // Only filters supplied by the frontend are added.
         const filter: Record<string, unknown> = {};
 
@@ -109,7 +159,7 @@ export class BooksService {
         };
     }
 
-    // Safely converts an unknown MongoDB value to a trimmed string.
+    // Safely converts an unknown book database value to a trimmed string.
     private toStringValue(value: unknown): string {
         if (typeof value !== 'string') {
             return '';
@@ -146,18 +196,19 @@ export class BooksService {
     }
 
     // Prevents special regular-expression characters from changing
-    // the intended MongoDB search behaviour.
+    // the intended book database search behaviour.
     private escapeRegex(value: string): string {
         return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
     }
 
-    async findAvailableThemes(): Promise<string []> {
+    // Returns all unique themes currently available in the catalog
+    async findAvailableThemes(): Promise<string[]> {
         const books = await this.bookModel
-            .find({}, { Themas_boek: 1})
+            .find({}, { Themas_boek: 1 })
             .lean()
             .exec();
 
-        // The lowercase key prevents duplicate themes that only differ in casing
+        // The lowercase key prevents duplicate themes that only differ in casing.
         const uniqueThemes = new Map<string, string>();
 
         for (const book of books) {
@@ -173,6 +224,8 @@ export class BooksService {
             }
         }
 
-        return [...uniqueThemes.values()].sort((a, b) => a.localeCompare(b, 'nl'),);
+        return [...uniqueThemes.values()].sort((a, b) =>
+            a.localeCompare(b, 'nl'),
+        );
     }
 }

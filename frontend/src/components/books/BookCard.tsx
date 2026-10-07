@@ -1,13 +1,19 @@
-// Component, represents the cards for each book that is shown on the catalog page
+/**
+ * Represents one book card shown in the catalog.
+ * An optional add action can be used to add the book to a reading list.
+ */
 
-import type { Book } from "../../types/book";
+import type { Book } from '../../types/book';
 
-import '../../pages/css/BookCard.css'
+import '../../pages/css/BookCard.css';
+import Button from '../ui/Button';
 
 interface BookCardProps {
     book: Book;
     onAdd?: (bookId: string) => void;
     addLabel?: string;
+    isAdding?: boolean;
+    isAdded?: boolean;
 }
 
 // Converts internal length codes to readable Dutch labels.
@@ -25,6 +31,8 @@ export default function BookCard({
     book,
     onAdd,
     addLabel = 'Toevoegen',
+    isAdding = false,
+    isAdded = false,
 }: BookCardProps) {
     return (
         <article className="book-card">
@@ -47,7 +55,9 @@ export default function BookCard({
                     )}
 
                     {book.length && (
-                        <span>{formatLength(book.length)}</span>
+                        <span>
+                            {formatLength(book.length)}
+                        </span>
                     )}
                 </div>
 
@@ -67,13 +77,17 @@ export default function BookCard({
             </div>
 
             {onAdd && (
-                <button
+                <Button
                     type="button"
-                    className="book-card-add"
+                    disabled={isAdding || isAdded}
                     onClick={() => onAdd(book.id)}
                 >
-                    {addLabel}
-                </button>
+                    {isAdding
+                        ? 'Toevoegen...'
+                        : isAdded
+                        ? 'Op leeslijst'
+                        : addLabel}
+                </Button>
             )}
         </article>
     );

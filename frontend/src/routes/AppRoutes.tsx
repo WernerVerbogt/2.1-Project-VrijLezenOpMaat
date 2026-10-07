@@ -15,6 +15,7 @@ import LandingPage from "../pages/LandingPage";
 import CatalogPage from "../pages/CatalogPage";
 import ReadingProfilePage from "../pages/ReadingProfileFormPage";
 import RecommendationPage from "../pages/RecommendationPage";
+import ReadingListPage from "../pages/ReadingListPage";
 
 export default function AppRoutes() {
     return (
@@ -38,7 +39,7 @@ export default function AppRoutes() {
                             <Route path="profile" element={<ReadingProfilePage />} />
                             <Route path="recommendations" element={<RecommendationPage />} />
                             <Route path="catalog" element={<CatalogPage /> } />
-                            <Route path="reading-list" element={<PlaceholderPage title="Mijn leeslijst" />} />
+                            <Route path="reading-list" element={<ReadingListPage />} />
                             <Route path="teacher" element={<PlaceholderPage title="Mijn docent" />} />
                         </Route>
                     </Route>

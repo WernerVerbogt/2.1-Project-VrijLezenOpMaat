@@ -1,0 +1,47 @@
+/* Shared button styles used throughout the application. */
+
+.app-button {
+    min-height: 42px;
+    padding: 0.5rem 0.9rem;
+    border: 1px solid transparent;
+    border-radius: 0.35rem;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.app-button--primary {
+    color: #ffffff;
+    background: var(--color-primary);
+}
+
+.app-button--primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.app-button--primary:hover:not(:disabled) {
+    background: var(--color-primary-dark);
+}
+
+.app-button--secondary {
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+    border-color: var(--color-border-dark);
+}
+
+.app-button--secondary:hover {
+  background: var(--color-primary-light);
+}
+
+.app-button--secondary:hover:not(:disabled) {
+    background: var(--color-primary-light)
+}
+
+.app-button:disabled {
+    cursor: not-allowed;
+    opacity: 0.6;
+}
+
+.app-button:focus-visible {
+    outline: 3px solid var(--color-primary-dark);
+    outline-offset: 2px;
+}

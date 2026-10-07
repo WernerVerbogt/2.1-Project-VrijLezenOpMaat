@@ -12,7 +12,7 @@ export default function PlaceholderPage({
             <h1>{title}</h1>
 
             <p>
-                ...
+                Hallo!
             </p>
         </section>
     );
