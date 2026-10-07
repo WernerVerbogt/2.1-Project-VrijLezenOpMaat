@@ -1,0 +1,538 @@
+/**
+ * Styling for the reading profile form, with the questions to get the reading profile of the user.
+ */
+
+/* Page */
+
+.reading-profile-page {
+  width: 100%;
+}
+
+.profile-page-header {
+  max-width: 760px;
+  margin-bottom: 1.5rem;
+}
+
+.profile-page-header h1 {
+  margin: 0 0 0.5rem;
+
+  color: var(--color-primary-dark);
+  font-size: 2rem;
+}
+
+.profile-page-header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+  line-height: 1.6;
+}
+
+
+/* Feedback messages */
+
+.profile-error,
+.profile-success {
+  max-width: 760px;
+
+  margin: 0 0 1.25rem;
+  padding: 0.85rem 1rem;
+
+  border-radius: 0.4rem;
+}
+
+.profile-error {
+  color: var(--color-error);
+  background: var(--color-error-background);
+
+  border: 1px solid var(--color-error);
+}
+
+.profile-success {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+
+  border: 1px solid var(--color-primary);
+}
+
+
+/* Main wizard card */
+
+.profile-wizard-card {
+  width: 100%;
+  max-width: 760px;
+
+  margin: 0 auto;
+  padding: 1.75rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+
+  box-shadow: 0 4px 16px rgba(35, 71, 61, 0.06);
+}
+
+
+/* Wizard header */
+
+.profile-question-header {
+  margin-bottom: 1.75rem;
+}
+
+.profile-step-number {
+  margin: 0 0 0.6rem;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.profile-progress-track {
+  width: 100%;
+  height: 8px;
+
+  overflow: hidden;
+
+  margin-bottom: 1rem;
+
+  background: var(--color-primary-light);
+
+  border-radius: 999px;
+}
+
+.profile-progress-value {
+  height: 100%;
+
+  background: var(--color-primary);
+
+  border-radius: 999px;
+
+  transition: width 0.2s ease;
+}
+
+.profile-category {
+  display: inline-block;
+
+  margin: 0;
+  padding: 0.3rem 0.6rem;
+
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+
+  border-radius: 999px;
+
+  font-size: 0.8rem;
+  font-weight: 700;
+}
+
+
+/* Question content */
+
+.profile-question-content {
+  min-height: 260px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+}
+
+.profile-question {
+  margin: 0;
+  padding: 0;
+
+  border: 0;
+}
+
+.profile-question legend,
+.profile-question > label {
+  display: block;
+
+  margin-bottom: 1rem;
+
+  color: var(--color-primary-dark);
+
+  font-size: 1.3rem;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+.profile-question > p {
+  margin: -0.4rem 0 1rem;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.9rem;
+}
+
+
+/* Radio and checkbox options */
+
+.profile-options {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 0.75rem;
+}
+
+.profile-options label {
+  min-height: 48px;
+
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+
+  padding: 0.75rem 0.9rem;
+
+  color: var(--color-text);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.45rem;
+
+  cursor: pointer;
+
+  transition:
+    border-color 0.15s ease,
+    background-color 0.15s ease;
+}
+
+.profile-options label:hover {
+  border-color: var(--color-primary);
+  background: var(--color-primary-light);
+}
+
+.profile-options label:has(input:checked) {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+
+  border-color: var(--color-primary);
+}
+
+.profile-options input[type="radio"],
+.profile-options input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+
+  margin: 0;
+
+  accent-color: var(--color-primary);
+
+  flex-shrink: 0;
+}
+
+
+/* Scale questions */
+
+.profile-scale {
+  display: grid;
+  grid-template-columns: minmax(100px, 1fr) repeat(5, auto) minmax(100px, 1fr);
+
+  align-items: center;
+  gap: 0.75rem;
+
+  margin-top: 1rem;
+}
+
+.profile-scale > span {
+  color: var(--color-text-muted);
+
+  font-size: 0.85rem;
+}
+
+.profile-scale > span:last-child {
+  text-align: right;
+}
+
+.profile-scale label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  gap: 0.35rem;
+
+  cursor: pointer;
+}
+
+.profile-scale input[type="radio"] {
+  width: 20px;
+  height: 20px;
+
+  margin: 0;
+
+  accent-color: var(--color-primary);
+}
+
+.profile-scale label span {
+  font-weight: 600;
+}
+
+
+/* Open text questions */
+
+.profile-question textarea {
+  width: 100%;
+
+  min-height: 140px;
+
+  padding: 0.75rem;
+
+  resize: vertical;
+
+  color: var(--color-text);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.45rem;
+
+  line-height: 1.5;
+}
+
+.profile-question textarea:hover {
+  border-color: var(--color-primary);
+}
+
+
+/* Wizard navigation */
+
+.profile-navigation {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+
+  margin-top: 2rem;
+  padding-top: 1.25rem;
+
+  border-top: 1px solid var(--color-border);
+}
+
+.profile-navigation button {
+  min-width: 120px;
+  min-height: 42px;
+
+  padding: 0.55rem 1rem;
+
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.4rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.profile-navigation button:first-child {
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+}
+
+.profile-navigation button:first-child:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+.profile-navigation button:last-child {
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border-color: var(--color-primary);
+}
+
+.profile-navigation button:last-child:hover {
+  background: var(--color-primary-dark);
+}
+
+.profile-navigation button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+
+/* Review screen */
+
+.profile-review {
+  width: 100%;
+  max-width: 900px;
+
+  margin: 0 auto;
+  padding: 1.75rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.65rem;
+
+  box-shadow: 0 4px 16px rgba(35, 71, 61, 0.06);
+}
+
+.profile-review > header {
+  margin-bottom: 1.5rem;
+}
+
+.profile-review > header h2 {
+  margin: 0 0 0.4rem;
+
+  color: var(--color-primary-dark);
+}
+
+.profile-review > header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Review summary */
+
+.profile-summary {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+
+  gap: 0.75rem;
+
+  margin: 0;
+}
+
+.profile-summary > div {
+  padding: 0.85rem 1rem;
+
+  background: var(--color-background);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.4rem;
+}
+
+.profile-summary dt {
+  margin-bottom: 0.3rem;
+
+  color: var(--color-text-muted);
+
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.profile-summary dd {
+  margin: 0;
+
+  color: var(--color-text);
+
+  line-height: 1.45;
+}
+
+
+/* Review buttons */
+
+.profile-review-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+
+  border-top: 1px solid var(--color-border);
+}
+
+.profile-review-actions button {
+  min-height: 42px;
+
+  padding: 0.55rem 1rem;
+
+  border-radius: 0.4rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.profile-review-actions button:first-child,
+.profile-review-actions button:last-child {
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-dark);
+}
+
+.profile-review-actions button:first-child:hover,
+.profile-review-actions button:last-child:hover {
+  background: var(--color-primary-light);
+}
+
+.profile-review-actions button[type="submit"] {
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border: 1px solid var(--color-primary);
+}
+
+.profile-review-actions button[type="submit"]:hover:not(:disabled) {
+  background: var(--color-primary-dark);
+}
+
+.profile-review-actions button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+
+/* Tablet */
+
+@media (max-width: 768px) {
+  .profile-options {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-summary {
+    grid-template-columns: 1fr;
+  }
+
+  .profile-scale {
+    grid-template-columns: repeat(5, 1fr);
+
+    gap: 0.5rem;
+  }
+
+  .profile-scale > span {
+    grid-column: 1 / -1;
+
+    text-align: left;
+  }
+
+  .profile-scale > span:last-child {
+    text-align: left;
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 520px) {
+  .profile-wizard-card,
+  .profile-review {
+    padding: 1.15rem;
+  }
+
+  .profile-page-header h1 {
+    font-size: 1.65rem;
+  }
+
+  .profile-question legend,
+  .profile-question > label {
+    font-size: 1.15rem;
+  }
+
+  .profile-navigation {
+    flex-direction: column-reverse;
+  }
+
+  .profile-navigation button {
+    width: 100%;
+  }
+
+  .profile-review-actions {
+    flex-direction: column;
+  }
+
+  .profile-review-actions button {
+    width: 100%;
+  }
+}

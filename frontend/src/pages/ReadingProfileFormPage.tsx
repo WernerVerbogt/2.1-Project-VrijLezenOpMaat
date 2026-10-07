@@ -13,6 +13,8 @@ import {
 
 import { useAuth } from '../context/useAuth';
 
+import './css/ReadingProfileFormPage.css';
+
 import {
   GENRE_OPTIONS,
   LANGUAGE_LEVEL_OPTIONS,

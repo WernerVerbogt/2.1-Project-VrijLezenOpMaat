@@ -1,0 +1,320 @@
+/* 
+ * Styling for the Catalog Page where all the available books are shown. 
+ */
+
+/* Page header */
+
+.catalog-page-header {
+  margin-bottom: 1.5rem;
+}
+
+.catalog-page-header h1 {
+  margin: 0 0 0.4rem;
+
+  color: var(--color-primary-dark);
+  font-size: 2rem;
+}
+
+.catalog-page-header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Main catalog layout */
+
+.catalog-layout {
+  display: grid;
+  grid-template-columns: 250px minmax(0, 1fr);
+  gap: 1.75rem;
+
+  align-items: start;
+}
+
+
+/* Filters */
+
+.catalog-filter-panel {
+  position: sticky;
+  top: 1.5rem;
+
+  padding: 1.25rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.catalog-filter-panel h2 {
+  margin: 0 0 1.25rem;
+
+  color: var(--color-primary-dark);
+  font-size: 1.25rem;
+}
+
+.catalog-filter-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.catalog-filter-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.catalog-filter-group label {
+  font-size: 0.9rem;
+  font-weight: 700;
+}
+
+.catalog-filter-group select {
+  width: 100%;
+  min-height: 42px;
+
+  padding: 0.5rem 0.65rem;
+
+  color: var(--color-text);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.35rem;
+}
+
+.catalog-filter-group select:hover {
+  border-color: var(--color-primary);
+}
+
+
+/* Filter buttons */
+
+.catalog-filter-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.catalog-button {
+  min-height: 42px;
+
+  padding: 0.5rem 0.9rem;
+
+  border: 1px solid transparent;
+  border-radius: 0.35rem;
+
+  font-weight: 600;
+
+  cursor: pointer;
+}
+
+.catalog-button-primary {
+  color: #ffffff;
+  background: var(--color-primary);
+}
+
+.catalog-button-primary:hover {
+  background: var(--color-primary-dark);
+}
+
+.catalog-button-secondary {
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+
+  border-color: var(--color-border-dark);
+}
+
+.catalog-button-secondary:hover {
+  background: var(--color-primary-light);
+}
+
+
+/* Catalog results */
+
+.catalog-content {
+  min-width: 0;
+}
+
+.catalog-results-header {
+  min-height: 52px;
+  margin-bottom: 1rem;
+
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.catalog-results-header h2 {
+  margin: 0;
+
+  color: var(--color-primary-dark);
+  font-size: 1.25rem;
+}
+
+.catalog-results-header p {
+  margin: 0.25rem 0 0;
+
+  color: var(--color-text-muted);
+  font-size: 0.9rem;
+}
+
+
+/* Book grid */
+
+.catalog-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 1.1rem;
+}
+
+
+/* Empty/loading/error states */
+
+.catalog-status {
+  padding: 2rem;
+
+  text-align: center;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.catalog-status h3 {
+  margin-top: 0;
+}
+
+.catalog-error {
+  color: var(--color-error);
+  background: var(--color-error-background);
+
+  border-color: var(--color-error);
+}
+
+
+/* Pagination */
+
+.catalog-pagination {
+  margin-top: 1.75rem;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.catalog-pagination button {
+  min-height: 38px;
+
+  padding: 0.45rem 0.9rem;
+
+  color: var(--color-primary-dark);
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border-dark);
+  border-radius: 0.35rem;
+
+  cursor: pointer;
+}
+
+.catalog-pagination button:hover:not(:disabled) {
+  background: var(--color-primary-light);
+}
+
+.catalog-pagination button:disabled {
+  cursor: not-allowed;
+  opacity: 0.45;
+}
+
+.catalog-current-page {
+  min-width: 38px;
+  height: 38px;
+
+  display: grid;
+  place-items: center;
+
+  color: #ffffff;
+  background: var(--color-primary);
+
+  border-radius: 0.35rem;
+
+  font-weight: 700;
+}
+
+
+/* Mobile filter toggle */
+
+.catalog-mobile-filter-button {
+  display: none;
+}
+
+
+/* Tablet */
+
+@media (max-width: 950px) {
+  .catalog-layout {
+    grid-template-columns: 220px minmax(0, 1fr);
+  }
+
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 700px) {
+  .catalog-mobile-filter-button {
+    width: 100%;
+    min-height: 44px;
+
+    display: block;
+
+    margin-bottom: 1rem;
+
+    color: var(--color-primary-dark);
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border-dark);
+    border-radius: 0.35rem;
+
+    font-weight: 600;
+
+    cursor: pointer;
+  }
+
+  .catalog-mobile-filter-button:hover {
+    background: var(--color-primary-light);
+  }
+
+  .catalog-layout {
+    display: block;
+  }
+
+  .catalog-filter-panel {
+    display: none;
+    position: static;
+
+    margin-bottom: 1.25rem;
+  }
+
+  .catalog-filter-panel--open {
+    display: block;
+  }
+
+  .catalog-results-header {
+    align-items: flex-start;
+  }
+
+  .catalog-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .catalog-pagination {
+    flex-wrap: wrap;
+  }
+}

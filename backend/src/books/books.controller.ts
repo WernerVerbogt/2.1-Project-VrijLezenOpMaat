@@ -10,13 +10,19 @@ import { GetBooksQueryDto } from './dto/get-books-query.dto';
 
 @Controller('books')
 export class BooksController {
-  constructor(private readonly booksService: BooksService) {}
+    constructor(private readonly booksService: BooksService) {}
 
-  // Returns one page of the catalog.
-  // This endpoint is temporarily public during development.
-  @Public()
-  @Get()
-  findPaginated(@Query() query: GetBooksQueryDto) {
-    return this.booksService.findPaginated(query);
-  }
+    // Returns all unique themes that are available in the catalog.
+    @Public()
+    @Get('themes')
+    findAvailableThemes() {
+        return this.booksService.findAvailableThemes();
+    }
+
+    // Returns one filtered and paginated page of the catalog.
+    @Public()
+    @Get()
+    findPaginated(@Query() query: GetBooksQueryDto) {
+        return this.booksService.findPaginated(query);
+    }
 }

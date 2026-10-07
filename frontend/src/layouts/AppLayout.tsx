@@ -4,7 +4,8 @@
 import { Outlet } from "react-router-dom"
 import Header from "../components/layout/Header"
 import Footer from "../components/layout/Footer"
-//import type { UserRole } from "../types/auth"
+
+import '../pages/css/index.css'
 
 export default function AppLayout() {
     return (

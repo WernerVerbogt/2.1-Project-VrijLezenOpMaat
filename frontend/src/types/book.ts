@@ -6,6 +6,7 @@ export interface Book {
     author: string,
     description: string,
     materialType: string,
+    length: string,
     level: string,
     themes: string[];
 }

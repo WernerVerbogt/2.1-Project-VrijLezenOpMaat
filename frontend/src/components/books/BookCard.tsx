@@ -2,10 +2,23 @@
 
 import type { Book } from "../../types/book";
 
+import '../../pages/css/BookCard.css'
+
 interface BookCardProps {
     book: Book;
     onAdd?: (bookId: string) => void;
     addLabel?: string;
+}
+
+// Converts internal length codes to readable Dutch labels.
+function formatLength(length: string): string {
+    const labels: Record<string, string> = {
+        SHORT: 'Kort',
+        MEDIUM: 'Gemiddeld',
+        LONG: 'Lang',
+    };
+
+    return labels[length] ?? length;
 }
 
 export default function BookCard({
@@ -14,29 +27,52 @@ export default function BookCard({
     addLabel = 'Toevoegen',
 }: BookCardProps) {
     return (
-        <article>
-            <h2>{book.title}</h2>
+        <article className="book-card">
+            <div className="book-card-placeholder">
+                <span>Boek</span>
+            </div>
 
-            <p>
-                <strong>Auteur:</strong> {book.author}
-            </p>
+            <div className="book-card-body">
+                <h3>{book.title}</h3>
 
-            <p>
-                <strong>Niveau:</strong> {book.level}
-            </p>
+                {book.author && (
+                    <p className="book-card-author">
+                        {book.author}
+                    </p>
+                )}
 
-            <p>{book.description}</p>
+                <div className="book-card-badges">
+                    {book.level && (
+                        <span>{book.level}</span>
+                    )}
 
-            {book.themes.length > 0 && (
-                <p>
-                    <strong>Thema's:</strong>{' '}
-                    {book.themes.join(', ')}
+                    {book.length && (
+                        <span>{formatLength(book.length)}</span>
+                    )}
+                </div>
+
+                <p className="book-card-description">
+                    {book.description}
                 </p>
-            )}
 
-            { onAdd && (
-                <button type="button" onClick={() => onAdd(book.id)}>
-                    {addLabel} {/*onAdd component can have different functionalities later*/}
+                {book.themes.length > 0 && (
+                    <div className="book-card-themes">
+                        {book.themes.map((theme) => (
+                            <span key={theme}>
+                                {theme}
+                            </span>
+                        ))}
+                    </div>
+                )}
+            </div>
+
+            {onAdd && (
+                <button
+                    type="button"
+                    className="book-card-add"
+                    onClick={() => onAdd(book.id)}
+                >
+                    {addLabel}
                 </button>
             )}
         </article>

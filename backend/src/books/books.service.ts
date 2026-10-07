@@ -118,7 +118,12 @@ export class BooksService {
         return value.trim();
     }
 
+    private isUrl(value: string): boolean {
+        return /^https?:\/\//i.test(value);
+    }
+
     // Themes can be stored as either an array or a semicolon-separated string.
+    // URLs stored in this source field are ignored because they are not themes.
     private normalizeThemes(value: unknown): string[] {
         if (Array.isArray(value)) {
             return value
@@ -127,14 +132,14 @@ export class BooksService {
                         typeof theme === 'string',
                 )
                 .map((theme) => theme.trim())
-                .filter((theme) => theme.length > 0);
+                .filter((theme) => theme.length > 0 && !this.isUrl(theme));
         }
 
         if (typeof value === 'string') {
             return value
                 .split(';')
                 .map((theme) => theme.trim())
-                .filter((theme) => theme.length > 0);
+                .filter((theme) => theme.length > 0 && !this.isUrl(theme));
         }
 
         return [];
@@ -144,5 +149,30 @@ export class BooksService {
     // the intended MongoDB search behaviour.
     private escapeRegex(value: string): string {
         return value.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    }
+
+    async findAvailableThemes(): Promise<string []> {
+        const books = await this.bookModel
+            .find({}, { Themas_boek: 1})
+            .lean()
+            .exec();
+
+        // The lowercase key prevents duplicate themes that only differ in casing
+        const uniqueThemes = new Map<string, string>();
+
+        for (const book of books) {
+            const rawBook = book as unknown as Record<string, unknown>;
+            const themes = this.normalizeThemes(rawBook['Themas_boek']);
+
+            for (const theme of themes) {
+                const key = theme.toLowerCase();
+
+                if (!uniqueThemes.has(key)) {
+                    uniqueThemes.set(key, theme);
+                }
+            }
+        }
+
+        return [...uniqueThemes.values()].sort((a, b) => a.localeCompare(b, 'nl'),);
     }
 }

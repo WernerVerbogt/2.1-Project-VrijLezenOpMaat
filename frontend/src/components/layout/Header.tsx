@@ -1,18 +1,15 @@
-// Header structure
+/** 
+ * Header structure
+ */
 
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
+
 import Navigation from "./Navigation";
-import { useAuth } from "../../context/useAuth"
-//import { log } from "console";
-//import type { UserRole } from "../../types/auth";
+import { useAuth } from "../../context/useAuth";
 
-/*interface HeaderProps {
-    role: UserRole;
-}*/
-
-export default function Header () {
-    const [menuOpen, setMenuOpen] = useState(false); // Component state
+export default function Header() {
+    const [menuOpen, setMenuOpen] = useState(false);
 
     const { user, logout } = useAuth();
     const navigate = useNavigate();
@@ -21,7 +18,8 @@ export default function Header () {
         return null;
     }
 
-    const homePath = user.role === "student" ? "/student" : "/teacher";
+    const homePath =
+        user.role === "student" ? "/student" : "/teacher";
 
     function handleLogout() {
         logout();
@@ -30,27 +28,39 @@ export default function Header () {
 
     return (
         <header className="site-header">
-            <div className="site-header-container">
-
-                <Link to={homePath} className="site-header__logo">
-                Vrij lezen op maat
+            <div className="site-header__container">
+                <Link
+                    to={homePath}
+                    className="site-header__logo"
+                >
+                    Vrij lezen op maat
                 </Link>
 
-                <button 
-                type="button" 
-                className="menu-button" 
-                aria-expanded={menuOpen} 
-                aria-controls="main-navigation"
-                onClick={() => setMenuOpen((previous) => !previous)}>
+                <button
+                    type="button"
+                    className="menu-button"
+                    aria-expanded={menuOpen}
+                    aria-controls="main-navigation"
+                    onClick={() =>
+                        setMenuOpen((previous) => !previous)
+                    }
+                >
                     Menu
                 </button>
 
-                <Navigation role={user.role} isOpen={menuOpen} onNavigate={() => setMenuOpen(false)}/>
+                <Navigation
+                    role={user.role}
+                    isOpen={menuOpen}
+                    onNavigate={() => setMenuOpen(false)}
+                />
 
-                <div className="site-header__acount">
+                <div className="site-header__account">
                     <span>{user.firstName}</span>
 
-                    <button type="button" onClick={handleLogout}>
+                    <button
+                        type="button"
+                        onClick={handleLogout}
+                    >
                         Uitloggen
                     </button>
                 </div>
