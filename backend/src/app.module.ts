@@ -15,6 +15,7 @@ import { BooksModule } from './books/books.module';
 import { ReadingProfileModule } from './reading-profile/reading-profile.module';
 import { RecommendationsModule } from './recommendations/recommendations.module';
 import { ReadingListModule } from './reading-list/reading-list.module';
+import { TeacherStudentLinksModule } from './teacher-student-links/teacher-student-links.module';
 
 @Module({
   imports: [
@@ -44,6 +45,7 @@ import { ReadingListModule } from './reading-list/reading-list.module';
     ReadingProfileModule,
     RecommendationsModule,
     ReadingListModule,
+    TeacherStudentLinksModule,
   ],
 })
 

@@ -97,7 +97,8 @@ export class ReadingListService {
         // Return both the catalog information and personal reading status
         return {
             ...book,
-            isRead: createdItem.addedByUserId,
+            isRead: createdItem.isRead,
+            addedByUserId: createdItem.addedByUserId,
             addedAt: createdItem.addedAt,
         };
     }
