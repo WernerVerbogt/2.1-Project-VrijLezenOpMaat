@@ -6,6 +6,8 @@ import { useAuth } from "../context/useAuth";
 import { loginUser } from "../services/authService";
 //import type { AuthUser } from "../types/auth";
 
+import './css/LoginPage.css'
+
 export default function LoginPage() {
     const { login } = useAuth();
     const navigate = useNavigate();
@@ -53,7 +55,7 @@ export default function LoginPage() {
                 <form onSubmit={handleSubmit}>
                     <div className="form-field">
                         <label htmlFor="email">
-                            E-mailadres
+                            Schoolmailadres
                         </label>
 
                         <input id="email" name="email" type="email" autoComplete="email" required value={email}

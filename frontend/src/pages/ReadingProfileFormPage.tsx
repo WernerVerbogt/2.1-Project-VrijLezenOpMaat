@@ -1344,15 +1344,6 @@ export default function ReadingProfilePage() {
         </p>
       )}
 
-      {successMessage && (
-        <p
-          className="profile-success"
-          role="status"
-        >
-          {successMessage}
-        </p>
-      )}
-
       <form onSubmit={handleSubmit}>
         {currentStep < REVIEW_STEP && (
           <section className="profile-wizard-card">
@@ -1606,6 +1597,17 @@ export default function ReadingProfilePage() {
                 </dd>
               </div>
             </dl>
+
+            <br />
+            
+            {successMessage && (
+              <p
+                className="profile-success"
+                role="status"
+              >
+                {successMessage}
+              </p>
+            )}
 
             <div className="profile-review-actions">
               <button

@@ -198,10 +198,7 @@ export default function ReadingListPage() {
                             );
 
                         return (
-                            <article
-                                key={item.id}
-                                className="reading-list-card"
-                            >
+                            <article key={item.id} className="reading-list-card" >
                                 <div className="reading-list-card-content">
                                     <header>
                                         <h2>
@@ -210,41 +207,44 @@ export default function ReadingListPage() {
 
                                         {item.author && (
                                             <p>
-                                                {item.author}
+                                                Auteur: {item.author}
                                             </p>
                                         )}
                                     </header>
-
+                                    
+                                    <p>
+                                        <strong>Beschrijving van het boek:</strong>
+                                    </p>
                                     <p>
                                         {item.description}
                                     </p>
 
                                     <dl className="reading-list-details">
                                         <div>
-                                            <dt>Niveau</dt>
+                                            <dt>Leesniveau</dt>
                                             <dd>
                                                 {item.level}
                                             </dd>
                                         </div>
 
                                         <div>
-                                            <dt>Lengte</dt>
+                                            <dt>Lengte boek</dt>
                                             <dd>
                                                 {formatLength(item.length)}
                                             </dd>
                                         </div>
 
                                         <div>
-                                            <dt>Type</dt>
+                                            <dt>Type materiaal</dt>
                                             <dd>
                                                 {item.materialType}
                                             </dd>
                                         </div>
 
                                         <div>
-                                            <dt>Status</dt>
+                                            <dt>Gelezen?</dt>
                                             <dd>
-                                                {item.isRead ? 'Gelezen' : 'Niet gelezen'}
+                                                {item.isRead ? '✅' : '❌'}
                                             </dd>
                                         </div>
                                     </dl>

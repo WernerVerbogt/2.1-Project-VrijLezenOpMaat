@@ -1,0 +1,71 @@
+/*
+ * Styling for the logged-in student home page.
+ */
+
+.logged-in-home-page {
+    width: 100%;
+}
+
+.logged-in-home-page__header {
+    margin-bottom: 1.5rem;
+}
+
+.logged-in-home-page__header h1 {
+    margin: 0 0 0.4rem;
+
+    color: var(--color-primary-dark);
+    font-size: 2rem;
+}
+
+.logged-in-home-page__header p {
+    margin: 0;
+
+    color: var(--color-text-muted);
+}
+
+
+/* Dashboard statistics */
+
+.logged-in-home-page__stats {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+
+    gap: 1.25rem;
+}
+
+
+/* Error message */
+
+.logged-in-home-page__error {
+    margin: 0 0 1.5rem;
+    padding: 1rem;
+
+    color: var(--color-text);
+
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+}
+
+
+/* Tablet */
+
+@media (max-width: 900px) {
+    .logged-in-home-page__stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+    .logged-in-home-page__stats {
+        grid-template-columns: 1fr;
+    }
+
+    .logged-in-home-page__header h1 {
+        font-size: 1.75rem;
+    }
+}

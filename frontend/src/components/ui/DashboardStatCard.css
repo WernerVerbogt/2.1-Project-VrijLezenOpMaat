@@ -1,0 +1,70 @@
+/*
+ * Styling for the reusable dashboard statistic card.
+ */
+
+.dashboard-stat-card {
+    min-height: 150px;
+    padding: 1.5rem;
+
+    background: var(--color-surface);
+
+    border: 1px solid var(--color-border);
+    border-radius: 0.5rem;
+}
+
+.dashboard-stat-card__title {
+    margin: 0 0 1rem;
+
+    color: var(--color-text-muted);
+    font-size: 1rem;
+    font-weight: 600;
+}
+
+.dashboard-stat-card__value {
+    margin: 0;
+
+    color: var(--color-primary-dark);
+    font-size: 1.75rem;
+    font-weight: 700;
+}
+
+.dashboard-stat-card__description {
+    margin: 0.5rem 0 0;
+
+    color: var(--color-text-muted);
+    font-size: 0.9rem;
+}
+
+
+/* Skeleton loading */
+
+.dashboard-stat-card__skeleton {
+    border-radius: 0.25rem;
+
+    background: var(--color-border);
+
+    animation: dashboard-skeleton-pulse 1.4s ease-in-out infinite;
+}
+
+.dashboard-stat-card__skeleton--value {
+    width: 55%;
+    height: 2rem;
+}
+
+.dashboard-stat-card__skeleton--description {
+    width: 80%;
+    height: 1rem;
+
+    margin-top: 0.75rem;
+}
+
+@keyframes dashboard-skeleton-pulse {
+    0%,
+    100% {
+        opacity: 0.45;
+    }
+
+    50% {
+        opacity: 1;
+    }
+}
