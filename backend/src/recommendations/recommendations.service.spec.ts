@@ -5,6 +5,7 @@
 import { BooksService } from '../books/books.service';
 import { ReadingProfileService } from '../reading-profile/reading-profile.service';
 import { RecommendationsService } from './recommendations.service';
+import { NotFoundException } from '@nestjs/common';
 
 describe('RecommendationsService', () => {
   let service: RecommendationsService;
@@ -288,5 +289,15 @@ describe('RecommendationsService', () => {
         ),
       ),
     ).toBe(true);
+  });
+
+  it('should throw NotFoundException when the student has no reading profile', async () => {
+    readingProfileServiceMock.getProfile.mockRejectedValue(
+      new NotFoundException(
+        'No reading profile found',
+      ),
+    );
+
+    await expect(service.getRecommendations('student-1')).rejects.toBeInstanceOf(NotFoundException);
   });
 });
