@@ -1,0 +1,167 @@
+/* Styles the page where students can link themselves to a teacher. */
+
+.teacher-link-page {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+.teacher-link-header {
+  margin-bottom: 1.5rem;
+}
+
+.teacher-link-header h1 {
+  margin: 0 0 0.5rem;
+
+  color: var(--color-primary-dark);
+}
+
+.teacher-link-header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+.teacher-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.teacher-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 1.25rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.teacher-card h2 {
+  margin: 0 0 0.3rem;
+
+  color: var(--color-primary-dark);
+  font-size: 1.1rem;
+}
+
+.teacher-card p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+.teacher-link-error,
+.teacher-link-success {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+
+  border-radius: 0.35rem;
+}
+
+.teacher-link-error {
+  color: var(--color-error);
+  background: var(--color-error-background);
+}
+
+.teacher-link-empty {
+  padding: 2rem;
+
+  text-align: center;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+/* Skeleton loading */
+
+.teacher-card-skeleton {
+  overflow: hidden;
+}
+
+.teacher-card-skeleton__content {
+  flex: 1;
+}
+
+.teacher-skeleton {
+  position: relative;
+  overflow: hidden;
+
+  background: #e6e6e6;
+
+  border-radius: 0.35rem;
+}
+
+.teacher-skeleton__name {
+  width: 180px;
+  height: 1.2rem;
+
+  margin-bottom: 0.6rem;
+}
+
+.teacher-skeleton__email {
+  width: 240px;
+  max-width: 80%;
+  height: 0.9rem;
+}
+
+.teacher-skeleton__button {
+  width: 140px;
+  height: 42px;
+
+  flex-shrink: 0;
+}
+
+.teacher-skeleton::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  transform: translateX(-100%);
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+
+  animation: teacher-skeleton-loading 1.4s infinite;
+}
+
+/* Mobile / Tablet responsive */
+
+@media (max-width: 600px) {
+  .teacher-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacher-card .app-button {
+    width: 100%;
+  }
+}
+
+@keyframes teacher-skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@media (max-width: 600px) {
+  .teacher-skeleton__button {
+    width: 100%;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-skeleton::after {
+    animation: none;
+  }
+}

@@ -58,7 +58,7 @@
 }
 
 
-/* Mobile */
+/* Mobile / Tablet responsive */
 
 @media (max-width: 600px) {
     .logged-in-home-page__stats {

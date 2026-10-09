@@ -14,20 +14,24 @@ import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
-import HomePage from "../pages/HomePage";
+/*import HomePage from "../pages/HomePage";*/
 import CatalogPage from "../pages/CatalogPage";
 import ReadingProfilePage from "../pages/ReadingProfileFormPage";
 import RecommendationPage from "../pages/RecommendationPage";
 import ReadingListPage from "../pages/ReadingListPage";
+import TeacherLinkPage from "../pages/TeacherLinkPage";
+import { Navigate } from "react-router-dom";
+import TeacherStudentsPage from "../pages/TeacherStudentsPage";
+import TeacherStudentDetailPage from "../pages/TeacherStudentDetailPage";
 
 export default function AppRoutes() {
     return (
         <BrowserRouter>
             <Routes>
 
-                <Route path="/" element={<HomePage />} />
+                {/*<Route path="/" element={<HomePage />} />*/}
 
-                {/*<Route path="/" element={<Navigate to ="/" replace />} /> {/*TODO replace with login ??*/}
+                <Route path="/" element={<Navigate to ="/" replace />} />
 
                 <Route path="/login" element={<LoginPage />} />
 
@@ -43,7 +47,7 @@ export default function AppRoutes() {
                             <Route path="recommendations" element={<RecommendationPage />} />
                             <Route path="catalog" element={<CatalogPage /> } />
                             <Route path="reading-list" element={<ReadingListPage />} />
-                            <Route path="teacher" element={<LoggedInHomePage />} />
+                            <Route path="teacher" element={<TeacherLinkPage />} />
                         </Route>
                     </Route>
 
@@ -51,8 +55,8 @@ export default function AppRoutes() {
                     <Route element={<RoleGuard allowedRole="teacher" />}>
                         <Route path="/teacher" element={<AppLayout />}>
                             <Route index element={<LoggedInHomePage />} />
-                            <Route path="students" element={<LoggedInHomePage />} />
-                            <Route path="students/:studentId" element={<LoggedInHomePage />} />
+                            <Route path="students" element={<TeacherStudentsPage />} />
+                            <Route path="students/:studentId" element={<TeacherStudentDetailPage />} />
                         </Route>
                     </Route>
                 </Route>

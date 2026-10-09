@@ -14,6 +14,8 @@ import type { BookRecommendation } from '../types/recommendation';
 
 import './css/RecommendationPage.css';
 
+const SKELETON_RECOMMENDATIONS = 3;
+
 export default function RecommendationPage() {
     const { accessToken } = useAuth();
 
@@ -198,14 +200,56 @@ export default function RecommendationPage() {
         return (
             <section
                 className="recommendations-page"
-                aria-live="polite"
+                aria-label="Leesadviezen worden geladen"
                 aria-busy="true"
             >
-                <h1>Jouw leesadvies</h1>
+                <header className="recommendations-page__header">
+                    <h1>Jouw leesadvies</h1>
 
-                <p>
-                    Je persoonlijke leesadviezen worden geladen...
-                </p>
+                    <p>
+                        Deze boeken worden geselecteerd
+                        op basis van jouw leesprofiel.
+                    </p>
+                </header>
+
+                <div className="recommendations-page__grid">
+                    {Array.from(
+                        {
+                            length:
+                                SKELETON_RECOMMENDATIONS,
+                        },
+                        (_, index) => (
+                            <article
+                                key={index}
+                                className="recommendation-card recommendation-skeleton"
+                                aria-hidden="true"
+                            >
+                                <div className="recommendation-skeleton__title" />
+
+                                <div className="recommendation-skeleton__author" />
+
+                                <div className="recommendation-skeleton__description">
+                                    <div className="recommendation-skeleton__line" />
+                                    <div className="recommendation-skeleton__line" />
+                                    <div className="recommendation-skeleton__line recommendation-skeleton__line--short" />
+                                </div>
+
+                                <div className="recommendation-skeleton__metadata">
+                                    <div className="recommendation-skeleton__metadata-item" />
+                                    <div className="recommendation-skeleton__metadata-item" />
+                                </div>
+
+                                <div className="recommendation-skeleton__reason">
+                                    <div className="recommendation-skeleton__line recommendation-skeleton__line--medium" />
+                                    <div className="recommendation-skeleton__line" />
+                                    <div className="recommendation-skeleton__line recommendation-skeleton__line--short" />
+                                </div>
+
+                                <div className="recommendation-skeleton__button" />
+                            </article>
+                        ),
+                    )}
+                </div>
             </section>
         );
     }

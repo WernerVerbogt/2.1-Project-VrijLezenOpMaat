@@ -149,7 +149,7 @@
 }
 
 
-/* Tablet */
+/* Mobile / Tablet responsive */
 
 @media (max-width: 800px) {
     .public-home-process__steps {
@@ -160,9 +160,6 @@
         padding: 4rem 1rem;
     }
 }
-
-
-/* Mobile */
 
 @media (max-width: 600px) {
     .public-home-header__content {

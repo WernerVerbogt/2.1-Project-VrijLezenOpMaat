@@ -16,6 +16,7 @@ import './css/CatalogPage.css';
 import Button from '../components/ui/Button';
 
 const PAGE_SIZE = 12;
+const SKELETON_BOOK_COUNT = 6;
 
 export default function CatalogPage() {
     const { accessToken } = useAuth();
@@ -476,10 +477,50 @@ export default function CatalogPage() {
                     )}
 
                     {isLoading && (
-                        <div className="catalog-status">
-                            Boekenlijst wordt
-                            geladen...
-                        </div>
+                        <section
+                            className="catalog-grid"
+                            aria-label="Boeken worden geladen"
+                            aria-busy="true"
+                        >
+                            {Array.from(
+                                {
+                                    length: SKELETON_BOOK_COUNT,
+                                },
+                                (_, index) => (
+                                    <article
+                                        key={index}
+                                        className="catalog-skeleton-card"
+                                        aria-hidden="true"
+                                    >
+                                        <div className="catalog-skeleton-cover" />
+
+                                        <div className="catalog-skeleton-body">
+                                            <div className="catalog-skeleton-line catalog-skeleton-title" />
+
+                                            <div className="catalog-skeleton-line catalog-skeleton-author" />
+
+                                            <div className="catalog-skeleton-badges">
+                                                <div className="catalog-skeleton-badge" />
+                                                <div className="catalog-skeleton-badge" />
+                                            </div>
+
+                                            <div className="catalog-skeleton-description">
+                                                <div className="catalog-skeleton-line" />
+                                                <div className="catalog-skeleton-line" />
+                                                <div className="catalog-skeleton-line catalog-skeleton-line-short" />
+                                            </div>
+
+                                            <div className="catalog-skeleton-themes">
+                                                <div className="catalog-skeleton-theme" />
+                                                <div className="catalog-skeleton-theme" />
+                                            </div>
+
+                                            <div className="catalog-skeleton-button" />
+                                        </div>
+                                    </article>
+                                ),
+                            )}
+                        </section>
                     )}
 
                     {!isLoading &&

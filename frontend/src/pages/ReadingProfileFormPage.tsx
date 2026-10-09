@@ -5,15 +5,9 @@
  * persisted after the student confirms the answers on the review screen
  */
 
-import {
-  useEffect,
-  useState,
-  type SyntheticEvent,
-} from 'react';
+import { useEffect, useState, type SyntheticEvent } from 'react';
 
 import { useAuth } from '../context/useAuth';
-
-import './css/ReadingProfileFormPage.css';
 
 import {
   GENRE_OPTIONS,
@@ -41,6 +35,7 @@ import type {
   SaveReadingProfilePayload,
 } from '../types/readingProfile';
 
+import './css/ReadingProfileFormPage.css';
 
 interface QuestionAnswerState {
   stringValue?: string;
@@ -194,7 +189,6 @@ const WIZARD_QUESTIONS: WizardQuestion[] = [
 const QUESTION_COUNT = WIZARD_QUESTIONS.length;
 const REVIEW_STEP = QUESTION_COUNT;
 
-
 // Creates an empty form for a student who does not have a profile yet.
 
 function createEmptyForm(): ReadingProfileFormState {
@@ -293,28 +287,18 @@ export default function ReadingProfilePage() {
   const [savedForm, setSavedForm] =
     useState<ReadingProfileFormState | null>(null);
 
-  const [
-    hasExistingProfile,
-    setHasExistingProfile,
-  ] = useState(false);
+  const [hasExistingProfile, setHasExistingProfile] = useState(false);
 
   // Tracks whether unsaved changes need to be stored temporarily.
-  const [
-    hasDraftChanges,
-    setHasDraftChanges,
-  ] = useState(false);
+  const [hasDraftChanges, setHasDraftChanges] = useState(false);
 
-  const [isLoading, setIsLoading] =
-    useState(true);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const [isSaving, setIsSaving] =
-    useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
-  const [errorMessage, setErrorMessage] =
-    useState('');
+  const [errorMessage, setErrorMessage] = useState('');
 
-  const [successMessage, setSuccessMessage] =
-    useState('');
+  const [successMessage, setSuccessMessage] = useState('');
 
 
 // Loads an existing profile. When 404 shows, it means that the student still needs to create a profile.
@@ -401,7 +385,6 @@ export default function ReadingProfilePage() {
     isLoading,
     hasDraftChanges,
   ]);
-
 
   function clearMessages() {
     setErrorMessage('');
@@ -704,7 +687,6 @@ export default function ReadingProfilePage() {
     }
 
     clearMessages();
-    markDraftChanged();
 
     setCurrentStep((step) =>
       Math.min(
@@ -714,10 +696,8 @@ export default function ReadingProfilePage() {
     );
   }
 
-
   function handlePrevious() {
     clearMessages();
-    markDraftChanged();
 
     setCurrentStep((step) =>
       Math.max(step - 1, 0),
@@ -882,9 +862,20 @@ export default function ReadingProfilePage() {
   }
 
 
-// Restores the last saved profile. For a new profile, all unsaved input is cleared.
-
+  // Restores the last saved profile after the student confirms
+  // that unsaved changes may be discarded.
   function handleCancel() {
+    if (hasDraftChanges) {
+      const shouldCancel = window.confirm(
+        'Je hebt wijzigingen die nog niet zijn opgeslagen. ' +
+          'Weet je zeker dat je deze wijzigingen wilt annuleren?',
+      );
+
+      if (!shouldCancel) {
+        return;
+      }
+    }
+
     if (savedForm) {
       setForm(savedForm);
     } else {
@@ -892,8 +883,6 @@ export default function ReadingProfilePage() {
     }
 
     setCurrentStep(0);
-
-    // Cancel also removes the unfinished profile from the current browser session.
     setHasDraftChanges(false);
 
     sessionStorage.removeItem(
@@ -1309,8 +1298,42 @@ export default function ReadingProfilePage() {
 
   if (isLoading) {
     return (
-      <main>
-        <p>Leesprofiel laden...</p>
+      <main className="reading-profile-page">
+        <header className="profile-page-header">
+          <div className="profile-skeleton profile-skeleton-heading" />
+          <div className="profile-skeleton profile-skeleton-header-text" />
+        </header>
+
+        <section
+          className="profile-wizard-card profile-loading-skeleton"
+          aria-label="Leesprofiel wordt geladen"
+          aria-busy="true"
+        >
+          <div
+            className="profile-loading-content"
+            aria-hidden="true"
+          >
+            <div className="profile-skeleton profile-skeleton-step" />
+
+            <div className="profile-skeleton profile-skeleton-progress" />
+
+            <div className="profile-skeleton profile-skeleton-category" />
+
+            <div className="profile-skeleton profile-skeleton-question" />
+
+            <div className="profile-skeleton-options">
+              <div className="profile-skeleton profile-skeleton-option" />
+              <div className="profile-skeleton profile-skeleton-option" />
+              <div className="profile-skeleton profile-skeleton-option" />
+              <div className="profile-skeleton profile-skeleton-option" />
+            </div>
+
+            <div className="profile-skeleton-navigation">
+              <div className="profile-skeleton profile-skeleton-button" />
+              <div className="profile-skeleton profile-skeleton-button" />
+            </div>
+          </div>
+        </section>
       </main>
     );
   }
@@ -1610,11 +1633,8 @@ export default function ReadingProfilePage() {
             )}
 
             <div className="profile-review-actions">
-              <button
-                type="button"
-                onClick={() => {
+              <button type="button" onClick={() => {
                   setCurrentStep(0);
-                  markDraftChanged();
                   clearMessages();
                 }}
                 disabled={isSaving}

@@ -9,6 +9,7 @@ node_modules/
 # Build output
 dist/
 build/
+*.tsbuildinfo
 
 # Logs
 *.log
@@ -24,6 +25,18 @@ Thumbs.db
 # Test coverage
 coverage/
 
+# Tool caches and temporary files
+.cache/
+.eslintcache
+.turbo/
+*.tmp
+*.temp
+
+# Python caches
+__pycache__/
+*.py[cod]
+
 # Prisma local databases
 *.db
 *.db-journal
+backend/tsconfig.build.tsbuildinfo  

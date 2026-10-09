@@ -20,6 +20,8 @@
 }
 
 .reading-list-card {
+    display: flex;
+    flex-direction: column;
     padding: 1.5rem;
     border: 1px solid #d9d9d9;
     border-radius: 0.75rem;
@@ -50,6 +52,8 @@
 }
 
 .reading-list-actions {
+    display: flex;
+    justify-content: flex-end;
     margin-top: 1.25rem;
 }
 
@@ -146,6 +150,8 @@
         transform: translateX(100%);
     }
 }
+
+/* Mobile / Tablet responsive or in small view */
 
 @media (prefers-reduced-motion: reduce) {
     .skeleton-title::after,

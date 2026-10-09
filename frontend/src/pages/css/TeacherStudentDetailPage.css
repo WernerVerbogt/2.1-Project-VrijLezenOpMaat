@@ -1,0 +1,351 @@
+/*
+ * Styles the teacher view of one linked student's profile,
+ * reading list and catalog.
+ */
+
+.teacher-student-detail-page {
+  width: min(1000px, 100%);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+
+/* Back navigation */
+
+.teacher-student-detail-back {
+  margin-bottom: 1.5rem;
+}
+
+
+/* Page header */
+
+.teacher-student-detail-header {
+  margin-bottom: 2rem;
+}
+
+.teacher-student-detail-header h1 {
+  margin: 0 0 0.4rem;
+
+  color: var(--color-primary-dark);
+}
+
+.teacher-student-detail-header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Feedback messages */
+
+.teacher-student-detail-error,
+.teacher-student-detail-success {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+
+  border-radius: 0.35rem;
+}
+
+.teacher-student-detail-error {
+  color: var(--color-error);
+  background: var(--color-error-background);
+
+  border: 1px solid var(--color-error);
+}
+
+.teacher-student-detail-success {
+  color: var(--color-primary-dark);
+  background: var(--color-primary-light);
+
+  border: 1px solid var(--color-primary);
+}
+
+
+/* Content sections */
+
+.teacher-student-section {
+  margin-bottom: 1.5rem;
+  padding: 1.5rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.teacher-student-section h2 {
+  margin-top: 0;
+
+  color: var(--color-primary-dark);
+}
+
+
+/* Student profile */
+
+.teacher-student-profile-details,
+.teacher-student-book-details {
+  display: grid;
+  grid-template-columns:
+    repeat(auto-fit, minmax(140px, 1fr));
+
+  gap: 1rem;
+}
+
+.teacher-student-profile-details div,
+.teacher-student-book-details div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+
+.teacher-student-profile-details dt,
+.teacher-student-book-details dt {
+  font-weight: 600;
+}
+
+.teacher-student-profile-details dd,
+.teacher-student-book-details dd {
+  margin: 0;
+}
+
+.teacher-student-profile-list {
+  margin-top: 1.5rem;
+}
+
+.teacher-student-profile-list h3 {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.teacher-student-profile-list ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+
+/* Reading list */
+
+.teacher-student-reading-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.teacher-student-book-card {
+  padding: 1rem;
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.teacher-student-book-card h3 {
+  margin: 0 0 0.25rem;
+
+  color: var(--color-primary-dark);
+}
+
+.teacher-student-book-card p {
+  margin: 0 0 1rem;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Catalog */
+
+.teacher-student-catalog {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1rem;
+
+  margin-top: 1.25rem;
+}
+
+.teacher-student-catalog-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+
+  margin-top: 1.5rem;
+}
+
+
+/* Shared skeleton base */
+
+.teacher-skeleton {
+  position: relative;
+  overflow: hidden;
+
+  background: #e6e6e6;
+
+  border-radius: 0.35rem;
+}
+
+.teacher-skeleton::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  transform: translateX(-100%);
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+
+  animation: teacher-detail-skeleton-loading 1.4s infinite;
+}
+
+
+/* Student detail skeleton */
+
+.teacher-detail-skeleton__back {
+  width: 160px;
+  height: 42px;
+
+  margin-bottom: 1.5rem;
+}
+
+.teacher-detail-skeleton__name {
+  width: 250px;
+  max-width: 80%;
+  height: 2rem;
+
+  margin-bottom: 0.65rem;
+}
+
+.teacher-detail-skeleton__email {
+  width: 210px;
+  max-width: 70%;
+  height: 1rem;
+}
+
+.teacher-detail-skeleton__heading {
+  width: 160px;
+  height: 1.4rem;
+
+  margin-bottom: 1.25rem;
+}
+
+.teacher-detail-skeleton__details {
+  display: grid;
+  grid-template-columns:
+    repeat(3, minmax(0, 1fr));
+
+  gap: 1rem;
+}
+
+.teacher-detail-skeleton__detail {
+  height: 55px;
+}
+
+.teacher-detail-skeleton__books {
+  display: grid;
+  gap: 1rem;
+}
+
+.teacher-detail-skeleton__book {
+  height: 110px;
+}
+
+
+/* Catalog skeleton */
+
+.teacher-catalog-skeleton {
+  padding: 1.25rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.teacher-catalog-skeleton__title {
+  width: 70%;
+  height: 1.3rem;
+
+  margin-bottom: 0.6rem;
+}
+
+.teacher-catalog-skeleton__author {
+  width: 45%;
+  height: 0.9rem;
+
+  margin-bottom: 1rem;
+}
+
+.teacher-catalog-skeleton__lines {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+}
+
+.teacher-catalog-skeleton__line {
+  width: 100%;
+  height: 0.9rem;
+}
+
+.teacher-catalog-skeleton__line--short {
+  width: 65%;
+  height: 0.9rem;
+}
+
+.teacher-catalog-skeleton__button {
+  width: 170px;
+  height: 42px;
+
+  margin-top: 1.25rem;
+}
+
+@keyframes teacher-detail-skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+/* Mobile / Tablet responsive */
+
+@media (max-width: 900px) {
+  .teacher-student-catalog {
+    grid-template-columns:
+      repeat(2, minmax(0, 1fr));
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .teacher-student-profile-details,
+  .teacher-student-book-details,
+  .teacher-detail-skeleton__details {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-student-catalog {
+    grid-template-columns: 1fr;
+  }
+
+  .teacher-student-catalog-pagination {
+    flex-wrap: wrap;
+  }
+
+  .teacher-catalog-skeleton__button {
+    width: 100%;
+  }
+}
+
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-skeleton::after {
+    animation: none;
+  }
+}

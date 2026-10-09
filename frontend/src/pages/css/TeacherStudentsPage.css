@@ -1,0 +1,175 @@
+/*
+ * Styles the overview of students linked to the logged-in teacher.
+ */
+
+.teacher-students-page {
+  width: min(900px, 100%);
+  margin: 0 auto;
+  padding: 2rem 1rem;
+}
+
+
+/* Page header */
+
+.teacher-students-header {
+  margin-bottom: 1.5rem;
+}
+
+.teacher-students-header h1 {
+  margin: 0 0 0.5rem;
+
+  color: var(--color-primary-dark);
+}
+
+.teacher-students-header p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Student list */
+
+.teacher-students-list {
+  display: grid;
+  gap: 1rem;
+}
+
+.teacher-student-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+
+  padding: 1.25rem;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+.teacher-student-card h2 {
+  margin: 0 0 0.3rem;
+
+  color: var(--color-primary-dark);
+  font-size: 1.1rem;
+}
+
+.teacher-student-card p {
+  margin: 0;
+
+  color: var(--color-text-muted);
+}
+
+
+/* Feedback states */
+
+.teacher-students-error {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
+
+  color: var(--color-error);
+  background: var(--color-error-background);
+
+  border: 1px solid var(--color-error);
+  border-radius: 0.35rem;
+}
+
+.teacher-students-empty {
+  padding: 2rem;
+
+  text-align: center;
+
+  background: var(--color-surface);
+
+  border: 1px solid var(--color-border);
+  border-radius: 0.5rem;
+}
+
+
+/* Skeleton loading */
+
+.teacher-student-skeleton-content {
+  flex: 1;
+}
+
+.teacher-student-skeleton {
+  position: relative;
+  overflow: hidden;
+
+  background: #e6e6e6;
+
+  border-radius: 0.35rem;
+}
+
+.teacher-student-skeleton-name {
+  width: 180px;
+  height: 1.2rem;
+
+  margin-bottom: 0.6rem;
+}
+
+.teacher-student-skeleton-email {
+  width: 240px;
+  max-width: 80%;
+  height: 0.9rem;
+}
+
+.teacher-student-skeleton-button {
+  width: 150px;
+  height: 42px;
+
+  flex-shrink: 0;
+}
+
+.teacher-student-skeleton::after {
+  content: '';
+
+  position: absolute;
+  inset: 0;
+
+  transform: translateX(-100%);
+
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.65),
+    transparent
+  );
+
+  animation: teacher-student-skeleton-loading 1.4s infinite;
+}
+
+@keyframes teacher-student-skeleton-loading {
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+
+/* Mobile */
+
+@media (max-width: 600px) {
+  .teacher-student-card {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .teacher-student-card .app-button {
+    width: 100%;
+  }
+
+  .teacher-student-skeleton-button {
+    width: 100%;
+  }
+}
+
+
+/* Accessibility */
+
+@media (prefers-reduced-motion: reduce) {
+  .teacher-student-skeleton::after {
+    animation: none;
+  }
+}
