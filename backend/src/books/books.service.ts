@@ -148,7 +148,7 @@ export class BooksService {
     // Maps the original Dutch catalog fields to application-friendly names.
     private mapBook(rawBook: Record<string, unknown>): CatalogBook {
         return {
-            id: String(rawBook['_id'] ?? ''),
+            id: this.toIdString(rawBook['_id']),
             title: this.toStringValue(rawBook['Titel']),
             author: this.toStringValue(rawBook['Auteur']),
             description: this.toStringValue(rawBook['Korte omschrijving']),
@@ -170,6 +170,19 @@ export class BooksService {
 
     private isUrl(value: string): boolean {
         return /^https?:\/\//i.test(value);
+    }
+
+    // Safely converts a ObjectId  or string value to an ID string from the book database.
+    private toIdString(value: unknown): string {
+        if (value instanceof Types.ObjectId) {
+            return value.toHexString();
+        }
+
+        if (typeof value === 'string') {
+            return value;
+        }
+
+        return '';
     }
 
     // Themes can be stored as either an array or a semicolon-separated string.

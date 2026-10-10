@@ -7,7 +7,6 @@ import {
 import { Request } from 'express';
 
 import { RecommendationsService } from './recommendations.service';
-import { StringLiteral } from 'typescript';
 
 // Defines JWT payload that the global AuthGuard adds to request.user.
 
@@ -33,7 +32,7 @@ export class RecommendationsController {
     @Get()
     async getRecommendations(@Req() request: AuthenticatedRequest) {
         // Temp check for JWT
-        console.log('Authenticated user:', request.user);
+        //console.log('Authenticated user:', request.user);
         
         if (request.user.role !== 'STUDENT' && 'student') {
             throw new ForbiddenException('Recommendations are only available for students.');

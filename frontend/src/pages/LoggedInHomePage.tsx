@@ -27,7 +27,6 @@ function LoggedInHomePage() {
 
     useEffect(() => {
         if (!accessToken) {
-            setIsLoading(false);
             return;
         }
 
