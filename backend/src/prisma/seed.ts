@@ -52,6 +52,18 @@ async function main() {
         },
     });
 
+        await prisma.user.upsert({
+        where: { email: 'student3@curio.nl' },
+        update: {},
+        create: {
+            email: 'student3@curio.nl',
+            passwordHash: studentHash,
+            firstName: 'Student 3',
+            lastName: 'Student',
+            role: UserRole.STUDENT,
+        },
+    });
+
     await prisma.user.upsert({
         where: { email: 'docent1@curio.nl' },
         update: {},
