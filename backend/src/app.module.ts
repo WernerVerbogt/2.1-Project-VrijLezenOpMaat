@@ -9,7 +9,6 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { PrismaModule } from './prisma/prisma.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './users/users.module';
 import { AuthModule } from './auth/auth.module'
 import { BooksModule } from './books/books.module';
 import { ReadingProfileModule } from './reading-profile/reading-profile.module';
@@ -37,8 +36,6 @@ import { TeacherStudentLinksModule } from './teacher-student-links/teacher-stude
       },
     }),
 
-    
-    UsersModule,
     AuthModule,
     BooksModule,
     PrismaModule,

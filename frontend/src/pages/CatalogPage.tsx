@@ -55,14 +55,11 @@ export default function CatalogPage() {
     useEffect(() => {
         async function loadThemes() {
             try {
-                const themes =
-                    await getBookThemes();
+                const themes = await getBookThemes();
 
                 setAvailableThemes(themes);
             } catch {
-                setError(
-                    'Themafilters konden niet worden geladen.',
-                );
+                setError('Themafilters konden niet worden geladen.');
             }
         }
 
@@ -124,9 +121,7 @@ export default function CatalogPage() {
                     data.totalPages,
                 );
             } catch {
-                setError(
-                    'Boekenlijst kon niet worden geladen.',
-                );
+                setError('Boekenlijst kon niet worden geladen.');
             } finally {
                 setIsLoading(false);
             }
@@ -145,18 +140,13 @@ export default function CatalogPage() {
         bookId: string,
     ) {
         if (!accessToken) {
-            setReadingListError(
-                'Je bent niet ingelogd.',
-            );
+            setReadingListError('Je bent niet ingelogd.');
             return;
         }
 
         // Prevent an unnecessary second request.
         if (
-            readingListBookIds.includes(
-                bookId,
-            ) ||
-            addingBookIds.includes(bookId)
+            readingListBookIds.includes(bookId) || addingBookIds.includes(bookId)
         ) {
             return;
         }
@@ -189,9 +179,7 @@ export default function CatalogPage() {
 
             // A conflict means that the book already exists on the reading list.
             if (
-                error instanceof
-                    ReadingListApiError &&
-                error.status === 409
+                error instanceof ReadingListApiError && error.status === 409
             ) {
                 setReadingListBookIds(
                     (current) =>
@@ -212,10 +200,7 @@ export default function CatalogPage() {
                     : 'Het boek kon niet aan je leeslijst worden toegevoegd.',
             );
         } finally {
-            setAddingBookIds((current) =>
-                current.filter(
-                    (id) => id !== bookId,
-                ),
+            setAddingBookIds((current) => current.filter((id) => id !== bookId),
             );
         }
     }
@@ -262,14 +247,8 @@ export default function CatalogPage() {
             <button
                 type="button"
                 className="catalog-mobile-filter-button"
-                aria-expanded={
-                    showMobileFilters
-                }
-                onClick={() =>
-                    setShowMobileFilters(
-                        (current) =>
-                            !current,
-                    )
+                aria-expanded={showMobileFilters}
+                onClick={() => setShowMobileFilters((current) => !current)
                 }
             >
                 {showMobileFilters
@@ -304,15 +283,7 @@ export default function CatalogPage() {
                             <select
                                 id="level-filter"
                                 value={level}
-                                onChange={(
-                                    event,
-                                ) =>
-                                    setLevel(
-                                        event
-                                            .target
-                                            .value,
-                                    )
-                                }
+                                onChange={(event) => setLevel(event.target.value)}
                             >
                                 <option value="">
                                     Alle niveaus
@@ -340,15 +311,7 @@ export default function CatalogPage() {
                             <select
                                 id="theme-filter"
                                 value={theme}
-                                onChange={(
-                                    event,
-                                ) =>
-                                    setTheme(
-                                        event
-                                            .target
-                                            .value,
-                                    )
-                                }
+                                onChange={(event) => setTheme(event.target.value)}
                             >
                                 <option value="">
                                     Alle thema's
@@ -383,14 +346,7 @@ export default function CatalogPage() {
                             <select
                                 id="length-filter"
                                 value={length}
-                                onChange={(
-                                    event,
-                                ) =>
-                                    setLength(
-                                        event
-                                            .target
-                                            .value,
-                                    )
+                                onChange={(event) => setLength(event.target.value)
                                 }
                             >
                                 <option value="">
@@ -457,21 +413,13 @@ export default function CatalogPage() {
                     </div>
 
                     {readingListError && (
-                        <div
-                            className="catalog-status catalog-error"
-                            role="alert"
-                        >
-                            {
-                                readingListError
-                            }
+                        <div className="catalog-status catalog-error" role="alert">
+                            {readingListError}
                         </div>
                     )}
 
                     {error && (
-                        <div
-                            className="catalog-status catalog-error"
-                            role="alert"
-                        >
+                        <div className="catalog-status catalog-error" role="alert">
                             {error}
                         </div>
                     )}
@@ -528,16 +476,12 @@ export default function CatalogPage() {
                         books.length === 0 && (
                             <div className="catalog-status">
                                 <h3>
-                                    Geen boeken
-                                    gevonden
+                                    Geen boeken gevonden
                                 </h3>
 
                                 <p>
-                                    Pas één of
-                                    meerdere
-                                    filters aan en
-                                    probeer
-                                    opnieuw.
+                                    Pas één of meerdere filters aan en
+                                    probeer opnieuw.
                                 </p>
                             </div>
                         )}
@@ -548,10 +492,7 @@ export default function CatalogPage() {
                             0 && (
                             <>
                                 <div className="catalog-grid">
-                                    {books.map(
-                                        (
-                                            book,
-                                        ) => (
+                                    {books.map((book) => (
                                             <BookCard
                                                 key={
                                                     book.id
@@ -580,19 +521,8 @@ export default function CatalogPage() {
                                 >
                                     <button
                                         type="button"
-                                        disabled={
-                                            page <=
-                                            1
-                                        }
-                                        onClick={() =>
-                                            setPage(
-                                                (
-                                                    currentPage,
-                                                ) =>
-                                                    currentPage -
-                                                    1,
-                                            )
-                                        }
+                                        disabled={page <= 1 }
+                                        onClick={() => setPage((currentPage) => currentPage - 1)}
                                     >
                                         Vorige
                                     </button>
@@ -603,26 +533,14 @@ export default function CatalogPage() {
 
                                     <span>
                                         van{' '}
-                                        {
-                                            totalPages
-                                        }
+
+                                        {totalPages}
                                     </span>
 
                                     <button
                                         type="button"
-                                        disabled={
-                                            page >=
-                                            totalPages
-                                        }
-                                        onClick={() =>
-                                            setPage(
-                                                (
-                                                    currentPage,
-                                                ) =>
-                                                    currentPage +
-                                                    1,
-                                            )
-                                        }
+                                        disabled={ page >= totalPages}
+                                        onClick={() => setPage((currentPage) => currentPage + 1)}
                                     >
                                         Volgende
                                     </button>

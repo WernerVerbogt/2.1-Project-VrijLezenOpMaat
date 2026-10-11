@@ -6,7 +6,6 @@
  */
 
 import { useEffect, useState, type SyntheticEvent } from 'react';
-
 import { useAuth } from '../context/useAuth';
 
 import {
@@ -91,7 +90,7 @@ type WizardQuestion =
     };
 
 
-// Temp. draft storage for the current browser tab
+// Draft storage for the current browser tab
 const SESSION_STORAGE_KEY = 'reading-profile-draft';
 
 

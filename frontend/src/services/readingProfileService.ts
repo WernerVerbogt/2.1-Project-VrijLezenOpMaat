@@ -76,8 +76,5 @@ async function createApiError(response: Response,): Promise<ReadingProfileApiErr
     // Keep the generic message if the response does not contain JSON.
   }
 
-  return new ReadingProfileApiError(
-    message,
-    response.status,
-  );
+  return new ReadingProfileApiError(message, response.status);
 }

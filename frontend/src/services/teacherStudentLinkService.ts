@@ -169,9 +169,7 @@ export async function addBookToLinkedStudentReadingList(
                 'Content-Type':
                     'application/json',
             },
-            body: JSON.stringify({
-                bookId,
-            }),
+            body: JSON.stringify({bookId}),
         },
     );
 

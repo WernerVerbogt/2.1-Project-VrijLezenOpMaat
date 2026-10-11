@@ -106,13 +106,14 @@
   display: flex;
   flex-wrap: wrap;
   gap: 0.3rem;
+  font-weight: 600;
 }
 
 .book-card-themes span {
   padding: 0.2rem 0.45rem;
 
-  color: var(--color-text-muted);
-  background: #f1f5f3;
+  color: var(--color-text);
+  background: #e4f0eb;
 
   border-radius: 999px;
 

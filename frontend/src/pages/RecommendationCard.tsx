@@ -33,18 +33,16 @@ export default function RecommendationCard({
 
                 {recommendation.author && (
                     <p className="recommendation-card__author">
-                        Door {
-                            recommendation.author
-                        }
+                        Door {recommendation.author}
                     </p>
                 )}
             </header>
 
             {recommendation.description && (
                 <p className="recommendation-card__description">
-                    {
-                        recommendation.description
-                    }
+
+                    {recommendation.description}
+
                 </p>
             )}
 
@@ -54,9 +52,9 @@ export default function RecommendationCard({
                     <div>
                         <dt>Niveau</dt>
                         <dd>
-                            {
-                                recommendation.level
-                            }
+
+                            {recommendation.level}
+
                         </dd>
                     </div>
                 )}
@@ -65,21 +63,16 @@ export default function RecommendationCard({
                     <div>
                         <dt>Type</dt>
                         <dd>
-                            {
-                                recommendation.materialType
-                            }
+                            {recommendation.materialType}
                         </dd>
                     </div>
                 )}
 
-                {recommendation.themes.length >
-                    0 && (
+                {recommendation.themes.length > 0 && (
                     <div>
                         <dt>Thema's</dt>
                         <dd>
-                            {recommendation.themes.join(
-                                ', ',
-                            )}
+                            {recommendation.themes.join(', ',)}
                         </dd>
                     </div>
                 )}
@@ -87,29 +80,19 @@ export default function RecommendationCard({
 
             <section
                 className="recommendation-card__reason"
-                aria-labelledby={
-                    `recommendation-reason-${recommendation.bookId}`
-                }
+                aria-labelledby={`recommendation-reason-${recommendation.bookId}`}
             >
-                <h3
-                    id={
-                        `recommendation-reason-${recommendation.bookId}`
-                    }
-                >
+                <h3 id={`recommendation-reason-${recommendation.bookId}`} >
                     Waarom past dit bij jou?
                 </h3>
 
                 <ul>
                     {recommendation.reasons.map(
                         (reason, index) => (
-                            <li
-                                key={
-                                    `${reason.type}-${index}`
-                                }
-                            >
-                                {
-                                    reason.message
-                                }
+                            <li key={`${reason.type}-${index}`}>
+                                
+                                {reason.message}
+
                             </li>
                         ),
                     )}
@@ -120,11 +103,7 @@ export default function RecommendationCard({
                 <Button
                     type="button"
                     disabled={isAdding || isOnReadingList}
-                    onClick={() =>
-                        void onAddToReadingList(
-                            recommendation.bookId,
-                        )
-                    }
+                    onClick={() => void onAddToReadingList(recommendation.bookId)}
                 >
                     {isAdding
                         ? 'Toevoegen...'

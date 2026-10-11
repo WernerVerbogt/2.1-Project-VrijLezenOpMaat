@@ -95,21 +95,12 @@ export default function ReadingListPage() {
             );
         } catch (error) {
             if (error instanceof Error) {
-                setErrorMessage(
-                    error.message,
-                );
+                setErrorMessage(error.message);
             } else {
-                setErrorMessage(
-                    'De leesstatus kon niet worden aangepast.',
-                );
+                setErrorMessage('De leesstatus kon niet worden aangepast.');
             }
         } finally {
-            setUpdatingBookIds((current) =>
-                current.filter(
-                    (bookId) =>
-                        bookId !== item.id,
-                ),
-            );
+            setUpdatingBookIds((current) => current.filter((bookId) => bookId !== item.id));
         }
     }
 
@@ -182,8 +173,7 @@ export default function ReadingListPage() {
 
                     <p>
                         Voeg een boek toe vanuit je
-                        leesadviezen of vanuit de
-                        catalogus.
+                        leesadviezen of vanuit de catalogus.
                     </p>
                 </section>
             ) : (
@@ -192,10 +182,7 @@ export default function ReadingListPage() {
                     aria-label="Opgeslagen boeken"
                 >
                     {readingList.map((item) => {
-                        const isUpdating =
-                            updatingBookIds.includes(
-                                item.id,
-                            );
+                        const isUpdating = updatingBookIds.includes(item.id);
 
                         return (
                             <article key={item.id} className="reading-list-card" >

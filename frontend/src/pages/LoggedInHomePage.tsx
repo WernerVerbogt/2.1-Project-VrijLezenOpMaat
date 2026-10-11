@@ -91,7 +91,7 @@ function LoggedInHomePage() {
     return (
         <main className="logged-in-home-page">
             <header className="logged-in-home-page__header">
-                <h1>Welkom terug</h1>
+                <h1>Welkom!</h1>
 
                 <p>
                     Hieronder zie je een korte samenvatting van je leesstatus.

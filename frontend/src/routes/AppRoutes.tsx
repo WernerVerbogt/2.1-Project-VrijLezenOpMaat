@@ -7,20 +7,19 @@
  * enabling navigation between different pages in the application. 
  * */
 
-import { BrowserRouter, Route, Routes } from "react-router-dom"; {/* TODO add Navigate */}
+import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"; {/* TODO add Navigate */}
 import AppLayout from "../layouts/AppLayout";
 import LoggedInHomePage from "../pages/LoggedInHomePage";
 import NotFoundPage from "../pages/NotFoundPage";
 import LoginPage from "../pages/LoginPage";
 import ProtectedRoute from "./ProtectedRoute";
 import RoleGuard from "./RoleGuard";
-/*import HomePage from "../pages/HomePage";*/
+import HomePage from "../pages/HomePage";
 import CatalogPage from "../pages/CatalogPage";
 import ReadingProfilePage from "../pages/ReadingProfileFormPage";
 import RecommendationPage from "../pages/RecommendationPage";
 import ReadingListPage from "../pages/ReadingListPage";
 import TeacherLinkPage from "../pages/TeacherLinkPage";
-import { Navigate } from "react-router-dom";
 import TeacherStudentsPage from "../pages/TeacherStudentsPage";
 import TeacherStudentDetailPage from "../pages/TeacherStudentDetailPage";
 
@@ -29,9 +28,7 @@ export default function AppRoutes() {
         <BrowserRouter>
             <Routes>
 
-                {/*<Route path="/" element={<HomePage />} />*/}
-
-                <Route path="/" element={<Navigate to ="/" replace />} />
+                <Route path="/" element={<HomePage />} />
 
                 <Route path="/login" element={<LoginPage />} />
 
@@ -54,7 +51,7 @@ export default function AppRoutes() {
                     {/*Routings for teacher */}
                     <Route element={<RoleGuard allowedRole="teacher" />}>
                         <Route path="/teacher" element={<AppLayout />}>
-                            <Route index element={<LoggedInHomePage />} />
+                            <Route index element={<Navigate to="students" replace />} />
                             <Route path="students" element={<TeacherStudentsPage />} />
                             <Route path="students/:studentId" element={<TeacherStudentDetailPage />} />
                         </Route>

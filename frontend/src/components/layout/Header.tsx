@@ -55,21 +55,13 @@ function Header() {
                 {/* Mobile menu button */}
                 <button
                     type="button"
-                    className={`menu-button ${
-                        menuOpen
-                            ? "menu-button--open"
-                            : ""
-                    }`}
-                    aria-label={
-                        menuOpen
-                            ? "Navigatiemenu sluiten"
-                            : "Navigatiemenu openen"
-                    }
+                    className={`menu-button ${menuOpen ? "menu-button--open" : ""}`}
+
+                    aria-label={menuOpen ? "Navigatiemenu sluiten" : "Navigatiemenu openen"}
                     aria-expanded={menuOpen}
                     aria-controls="main-navigation"
-                    onClick={() =>
-                        setMenuOpen((current) => !current)
-                    }
+
+                    onClick={() =>setMenuOpen((current) => !current)}
                 >
                     <span className="menu-button__line" />
                     <span className="menu-button__line" />

@@ -75,9 +75,7 @@ export default function RecommendationPage() {
 
                 if (!cancelled) {
                     setReadingListBookIds(
-                        items.map(
-                            (item) => item.id,
-                        ),
+                        items.map((item) => item.id),
                     );
                 }
             } catch {
@@ -122,9 +120,7 @@ export default function RecommendationPage() {
         bookId: string,
     ) {
         if (!accessToken) {
-            setReadingListError(
-                'Je bent niet ingelogd.',
-            );
+            setReadingListError('Je bent niet ingelogd.');
             return;
         }
 
@@ -156,8 +152,7 @@ export default function RecommendationPage() {
 
             // A conflict means the book was already saved earlier.
             if (
-                error instanceof
-                    ReadingListApiError &&
+                error instanceof ReadingListApiError &&
                 error.status === 409
             ) {
                 setReadingListBookIds(
@@ -176,11 +171,7 @@ export default function RecommendationPage() {
             setReadingListError(error instanceof Error ? error.message : 'Het boek kon niet aan je leeslijst worden toegevoegd.');
 
         } finally {
-            setAddingBookIds((current) =>
-                current.filter(
-                    (id) => id !== bookId,
-                ),
-            );
+            setAddingBookIds((current) => current.filter((id) => id !== bookId));
         }
     }
 
@@ -266,14 +257,10 @@ export default function RecommendationPage() {
                 >
                     <p>{error}</p>
 
-                    <button
-                        type="button"
-                        onClick={() =>
-                            void handleRetry()
-                        }
-                    >
+                    <button type="button" onClick={() => void handleRetry()}>
                         Opnieuw proberen
                     </button>
+                    
                 </div>
             </section>
         );

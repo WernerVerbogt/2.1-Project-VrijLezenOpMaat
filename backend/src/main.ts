@@ -29,9 +29,7 @@ async function bootstrap() {
   );
 
   // Allows the local React frontend to communicate with the API.
-  app.enableCors({
-    origin: 'http://localhost:5173',
-  });
+  app.enableCors({origin: 'http://localhost:5173'});
 
   // Generates OpenAPI documentation for the REST API.
   const swaggerConfig = new DocumentBuilder()

@@ -4,37 +4,25 @@
  * Access to the student is validated by the backend.
  */
 
-import {
-    useEffect,
-    useState,
-} from 'react';
-
-import {
-    useNavigate,
-    useParams,
-} from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
+import { addBookToLinkedStudentReadingList, getLinkedStudentDetails } from '../services/teacherStudentLinkService';
+import { getBooks } from '../services/booksApi';
+
+import {
+    LANGUAGE_LEVEL_OPTIONS,
+    LENGTH_OPTIONS,
+    READING_GOAL_OPTIONS,
+    THEME_OPTIONS,
+} from '../config/readingProfileConfig';
+
+import type { ReadingProfileOption } from '../config/readingProfileConfig';
+import type { LinkedStudentDetails } from '../types/teacherStudentLink';
+import type { Book } from '../types/book';
 
 import Button from '../components/ui/Button';
 import BookCard from '../components/books/BookCard';
-
-import {
-    addBookToLinkedStudentReadingList,
-    getLinkedStudentDetails,
-} from '../services/teacherStudentLinkService';
-
-import {
-    getBooks,
-} from '../services/booksApi';
-
-import type {
-    LinkedStudentDetails,
-} from '../types/teacherStudentLink';
-
-import type {
-    Book,
-} from '../types/book';
 
 import './css/TeacherStudentDetailPage.css';
 
@@ -53,46 +41,34 @@ function formatLength(
     return labels[length] ?? length;
 }
 
+// Converts an internal profile code to its readable label.
+function getOptionLabel(options: ReadingProfileOption[], value: string): string {
+    return (options.find((option) => option.value === value)?.label ?? value);
+}
+
 export default function TeacherStudentDetailPage() {
     const { accessToken } = useAuth();
     const { studentId } = useParams();
     const navigate = useNavigate();
 
-    const [student, setStudent] =
-        useState<LinkedStudentDetails | null>(
-            null,
-        );
+    const [student, setStudent] = useState<LinkedStudentDetails | null>(null);
 
-    const [isLoading, setIsLoading] =
-        useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [errorMessage, setErrorMessage] =
-        useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const [successMessage, setSuccessMessage] =
-        useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     // Catalog state.
-    const [catalogBooks, setCatalogBooks] =
-        useState<Book[]>([]);
+    const [catalogBooks, setCatalogBooks] = useState<Book[]>([]);
 
-    const [catalogPage, setCatalogPage] =
-        useState(1);
+    const [catalogPage, setCatalogPage] = useState(1);
 
-    const [
-        catalogTotalPages,
-        setCatalogTotalPages,
-    ] = useState(0);
+    const [catalogTotalPages, setCatalogTotalPages] = useState(0);
 
-    const [
-        isCatalogLoading,
-        setIsCatalogLoading,
-    ] = useState(true);
+    const [isCatalogLoading, setIsCatalogLoading] = useState(true);
 
-    const [
-        addingBookId,
-        setAddingBookId,
-    ] = useState<string | null>(null);
+    const [addingBookId, setAddingBookId] = useState<string | null>(null);
 
     // Loads the selected linked student.
     useEffect(() => {
@@ -216,9 +192,8 @@ export default function TeacherStudentDetailPage() {
             );
         } catch (error) {
             if (error instanceof Error) {
-                setErrorMessage(
-                    error.message,
-                );
+                setErrorMessage(error.message);
+
             } else {
                 setErrorMessage(
                     'Het boek kon niet worden toegevoegd.',
@@ -274,10 +249,7 @@ export default function TeacherStudentDetailPage() {
         return (
             <main className="teacher-student-detail-page">
                 {errorMessage && (
-                    <p
-                        className="teacher-student-detail-error"
-                        role="alert"
-                    >
+                    <p className="teacher-student-detail-error" role="alert">
                         {errorMessage}
                     </p>
                 )}
@@ -285,11 +257,7 @@ export default function TeacherStudentDetailPage() {
                 <Button
                     type="button"
                     variant="secondary"
-                    onClick={() =>
-                        navigate(
-                            '/teacher/students',
-                        )
-                    }
+                    onClick={() => navigate('/teacher/students')}
                 >
                     Terug naar studenten
                 </Button>
@@ -303,11 +271,7 @@ export default function TeacherStudentDetailPage() {
                 <Button
                     type="button"
                     variant="secondary"
-                    onClick={() =>
-                        navigate(
-                            '/teacher/students',
-                        )
-                    }
+                    onClick={() => navigate('/teacher/students')}
                 >
                     Terug naar studenten
                 </Button>
@@ -323,10 +287,7 @@ export default function TeacherStudentDetailPage() {
             </header>
 
             {errorMessage && (
-                <p
-                    className="teacher-student-detail-error"
-                    role="alert"
-                >
+                <p className="teacher-student-detail-error" role="alert">
                     {errorMessage}
                 </p>
             )}
@@ -345,77 +306,60 @@ export default function TeacherStudentDetailPage() {
 
                 {!student.readingProfile ? (
                     <p>
-                        Deze student heeft nog geen
-                        leesprofiel ingevuld.
+                        Deze student heeft nog geen leesprofiel ingevuld.
                     </p>
                 ) : (
                     <>
                         <dl className="teacher-student-profile-details">
                             <div>
-                                <dt>
-                                    Leesniveau
-                                </dt>
+                                <dt>Leesniveau</dt>
 
                                 <dd>
-                                    {
-                                        student
-                                            .readingProfile
-                                            .languageLevelCode
-                                    }
-                                </dd>
-                            </div>
-
-                            <div>
-                                <dt>
-                                    Voorkeurslengte
-                                </dt>
-
-                                <dd>
-                                    {formatLength(
-                                        student
-                                            .readingProfile
-                                            .preferredLengthCode,
+                                    {getOptionLabel(
+                                        LANGUAGE_LEVEL_OPTIONS,
+                                        student.readingProfile.languageLevelCode,
                                     )}
                                 </dd>
                             </div>
 
                             <div>
-                                <dt>
-                                    Leesdoel
-                                </dt>
+                                <dt>Voorkeurslengte</dt>
 
                                 <dd>
-                                    {
-                                        student
-                                            .readingProfile
-                                            .readingGoalCode
-                                    }
+                                    {getOptionLabel(
+                                        LENGTH_OPTIONS,
+                                        student.readingProfile.preferredLengthCode,
+                                    )}
+                                </dd>
+                            </div>
+
+                            <div>
+                                <dt>Leesdoel</dt>
+
+                                <dd>
+                                    {getOptionLabel(
+                                        READING_GOAL_OPTIONS,
+                                        student.readingProfile.readingGoalCode,
+                                    )}
                                 </dd>
                             </div>
                         </dl>
 
-                        {student.readingProfile
-                            .themes.length > 0 && (
+                        {student.readingProfile.themes.length > 0 && (
                             <div className="teacher-student-profile-list">
-                                <h3>
-                                    Thema's
-                                </h3>
+                                <h3>Thema's</h3>
 
                                 <ul>
-                                    {student.readingProfile
-                                        .themes.map(
-                                            (theme) => (
-                                                <li
-                                                    key={
-                                                        theme.themeCode
-                                                    }
-                                                >
-                                                    {
-                                                        theme.themeCode
-                                                    }
-                                                </li>
-                                            ),
-                                        )}
+                                    {student.readingProfile.themes.map(
+                                        (theme) => (
+                                            <li key={theme.themeCode}>
+                                                {getOptionLabel(
+                                                    THEME_OPTIONS,
+                                                    theme.themeCode,
+                                                )}
+                                            </li>
+                                        ),
+                                    )}
                                 </ul>
                             </div>
                         )}
@@ -426,11 +370,9 @@ export default function TeacherStudentDetailPage() {
             <section className="teacher-student-section">
                 <h2>Leeslijst</h2>
 
-                {student.readingList.length ===
-                0 ? (
+                {student.readingList.length === 0 ? (
                     <p>
-                        Deze student heeft nog geen
-                        boeken op de leeslijst.
+                        Deze student heeft nog geen boeken op de leeslijst.
                     </p>
                 ) : (
                     <div className="teacher-student-reading-list">
@@ -442,16 +384,12 @@ export default function TeacherStudentDetailPage() {
                                 >
                                     <div>
                                         <h3>
-                                            {
-                                                book.title
-                                            }
+                                            {book.title}
                                         </h3>
 
                                         {book.author && (
                                             <p>
-                                                {
-                                                    book.author
-                                                }
+                                                {book.author}
                                             </p>
                                         )}
                                     </div>
@@ -462,9 +400,7 @@ export default function TeacherStudentDetailPage() {
                                                 Niveau
                                             </dt>
                                             <dd>
-                                                {
-                                                    book.level
-                                                }
+                                                {book.level}
                                             </dd>
                                         </div>
 
@@ -473,9 +409,7 @@ export default function TeacherStudentDetailPage() {
                                                 Lengte
                                             </dt>
                                             <dd>
-                                                {formatLength(
-                                                    book.length,
-                                                )}
+                                                {formatLength(book.length)}
                                             </dd>
                                         </div>
 
@@ -484,9 +418,7 @@ export default function TeacherStudentDetailPage() {
                                                 Status
                                             </dt>
                                             <dd>
-                                                {book.isRead
-                                                    ? 'Gelezen'
-                                                    : 'Niet gelezen'}
+                                                {book.isRead ? 'Gelezen' : 'Niet gelezen'}
                                             </dd>
                                         </div>
                                     </dl>
@@ -541,12 +473,7 @@ export default function TeacherStudentDetailPage() {
                                 (book) => {
                                     const isAlreadyAdded =
                                         student.readingList.some(
-                                            (
-                                                readingListItem,
-                                            ) =>
-                                                readingListItem.id ===
-                                                book.id,
-                                        );
+                                            (readingListItem) => readingListItem.id === book.id);
 
                                     return (
                                         <BookCard
@@ -556,19 +483,11 @@ export default function TeacherStudentDetailPage() {
                                             book={
                                                 book
                                             }
-                                            onAdd={() =>
-                                                void handleAddBook(
-                                                    book.id,
-                                                )
+                                            onAdd={() => void handleAddBook(book.id)
                                             }
                                             addLabel="Toevoegen aan student"
-                                            isAdding={
-                                                addingBookId ===
-                                                book.id
-                                            }
-                                            isAdded={
-                                                isAlreadyAdded
-                                            }
+                                            isAdding={addingBookId === book.id}
+                                            isAdded={isAlreadyAdded}
                                         />
                                     );
                                 },
@@ -582,21 +501,9 @@ export default function TeacherStudentDetailPage() {
                                 aria-label="Cataloguspaginering"
                             >
                                 <Button
-                                    type="button"
-                                    variant="secondary"
-                                    disabled={
-                                        catalogPage <=
-                                        1
-                                    }
-                                    onClick={() =>
-                                        setCatalogPage(
-                                            (
-                                                current,
-                                            ) =>
-                                                current -
-                                                1,
-                                        )
-                                    }
+                                    type="button" variant="secondary"
+                                    disabled={catalogPage <= 1}
+                                    onClick={() => setCatalogPage((current) => current - 1)}
                                 >
                                     Vorige
                                 </Button>
@@ -617,14 +524,7 @@ export default function TeacherStudentDetailPage() {
                                         catalogPage >=
                                         catalogTotalPages
                                     }
-                                    onClick={() =>
-                                        setCatalogPage(
-                                            (
-                                                current,
-                                            ) =>
-                                                current +
-                                                1,
-                                        )
+                                    onClick={() => setCatalogPage(( current ) => current + 1)
                                     }
                                 >
                                     Volgende

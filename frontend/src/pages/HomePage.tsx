@@ -40,13 +40,6 @@ function HomePage() {
                             Ontdek boeken op basis van jouw leesniveau,
                             interesses en voorkeuren.
                         </p>
-
-                        <Link
-                            to="/login"
-                            className="public-home-hero__button"
-                        >
-                            Inloggen
-                        </Link>
                     </div>
                 </section>
 
@@ -55,12 +48,11 @@ function HomePage() {
                     <div className="public-home-process__content">
                         <header className="public-home-process__header">
                             <h2>
-                                Zo werkt Vrij lezen op maat
+                                Zo werkt het
                             </h2>
 
                             <p>
-                                In drie eenvoudige stappen vind je een boek
-                                dat beter bij jou past.
+                                In drie stappen vind je een boek dat bij jou past.
                             </p>
                         </header>
 

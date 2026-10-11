@@ -24,11 +24,10 @@ const studentLinks: NavigationLink[] = [
     { path: "/student/recommendations", label: "Advies"},
     { path: "/student/catalog", label: "Catalogus"},
     { path: "/student/reading-list", label: "Leeslijst"},
-    { path: "/student/teacher", label: "Docent"}
+    { path: "/student/teacher", label: "Mijn docenten"}
 ];
 
 const teacherLinks: NavigationLink[] = [
-    { path: "/teacher", label: "Home", end: true },
     { path: "/teacher/students", label: "Mijn studenten"},
 ];
 

@@ -19,22 +19,15 @@ const SKELETON_TEACHERS = 3;
 export default function TeacherLinkPage() {
     const { accessToken } = useAuth();
 
-    const [teachers, setTeachers] =
-        useState<Teacher[]>([]);
+    const [teachers, setTeachers] = useState<Teacher[]>([]);
 
-    const [isLoading, setIsLoading] =
-        useState(true);
+    const [isLoading, setIsLoading] = useState(true);
 
-    const [
-        linkingTeacherId,
-        setLinkingTeacherId,
-    ] = useState<string | null>(null);
+    const [linkingTeacherId, setLinkingTeacherId] = useState<string | null>(null);
 
-    const [errorMessage, setErrorMessage] =
-        useState('');
+    const [errorMessage, setErrorMessage] = useState('');
 
-    const [successMessage, setSuccessMessage] =
-        useState('');
+    const [successMessage, setSuccessMessage] = useState('');
 
     useEffect(() => {
         async function loadTeachers() {
@@ -48,20 +41,14 @@ export default function TeacherLinkPage() {
 
             try {
                 const result =
-                    await getTeachers(
-                        accessToken,
-                    );
+                    await getTeachers(accessToken);
 
                 setTeachers(result);
             } catch (error) {
                 if (error instanceof Error) {
-                    setErrorMessage(
-                        error.message,
-                    );
+                    setErrorMessage(error.message);
                 } else {
-                    setErrorMessage(
-                        'De docenten konden niet worden geladen.',
-                    );
+                    setErrorMessage('De docenten konden niet worden geladen.');
                 }
             } finally {
                 setIsLoading(false);
@@ -75,9 +62,7 @@ export default function TeacherLinkPage() {
         teacherId: string,
     ) {
         if (!accessToken) {
-            setErrorMessage(
-                'Je bent niet ingelogd.',
-            );
+            setErrorMessage('Je bent niet ingelogd.');
             return;
         }
 
@@ -86,12 +71,7 @@ export default function TeacherLinkPage() {
         setLinkingTeacherId(teacherId);
 
         try {
-            await linkTeacher(
-                accessToken,
-                {
-                    teacherId,
-                },
-            );
+            await linkTeacher(accessToken, {teacherId});
 
             // Update the linked status without reloading the complete page.
             setTeachers((current) =>
@@ -105,18 +85,12 @@ export default function TeacherLinkPage() {
                 ),
             );
 
-            setSuccessMessage(
-                'De docent is succesvol gekoppeld.',
-            );
+            setSuccessMessage('De docent is succesvol gekoppeld.');
         } catch (error) {
             if (error instanceof Error) {
-                setErrorMessage(
-                    error.message,
-                );
+                setErrorMessage(error.message);
             } else {
-                setErrorMessage(
-                    'De docent kon niet worden gekoppeld.',
-                );
+                setErrorMessage('De docent kon niet worden gekoppeld.');
             }
         } finally {
             setLinkingTeacherId(null);
@@ -134,19 +108,13 @@ export default function TeacherLinkPage() {
             </header>
 
             {errorMessage && (
-                <p
-                    className="teacher-link-error"
-                    role="alert"
-                >
+                <p className="teacher-link-error" role="alert">
                     {errorMessage}
                 </p>
             )}
 
             {successMessage && (
-                <p
-                    className="teacher-link-success"
-                    role="status"
-                >
+                <p className="teacher-link-success" role="status">
                     {successMessage}
                 </p>
             )}
@@ -193,9 +161,7 @@ export default function TeacherLinkPage() {
                     aria-label="Beschikbare docenten"
                 >
                     {teachers.map((teacher) => {
-                        const isLinking =
-                            linkingTeacherId ===
-                            teacher.id;
+                        const isLinking = linkingTeacherId === teacher.id;
 
                         return (
                             <article
@@ -215,15 +181,8 @@ export default function TeacherLinkPage() {
 
                                 <Button
                                     type="button"
-                                    disabled={
-                                        teacher.isLinked ||
-                                        isLinking
-                                    }
-                                    onClick={() =>
-                                        void handleLinkTeacher(
-                                            teacher.id,
-                                        )
-                                    }
+                                    disabled={teacher.isLinked || isLinking}
+                                    onClick={() => void handleLinkTeacher(teacher.id)}
                                 >
                                     {isLinking
                                         ? 'Koppelen...'

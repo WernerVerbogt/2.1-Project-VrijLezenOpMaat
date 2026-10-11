@@ -4,7 +4,6 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../context/useAuth";
 import { loginUser } from "../services/authService";
-//import type { AuthUser } from "../types/auth";
 
 import './css/LoginPage.css'
 
@@ -36,7 +35,7 @@ export default function LoginPage() {
                 navigate("/student");
             }
             else {
-                navigate("/teacher");
+                navigate("/teacher/students");
             }
         } catch (error) {
             if (error instanceof Error) {
@@ -55,7 +54,7 @@ export default function LoginPage() {
                 <form onSubmit={handleSubmit}>
                     <div className="form-field">
                         <label htmlFor="email">
-                            Schoolmailadres
+                            E-mailadres
                         </label>
 
                         <input id="email" name="email" type="email" autoComplete="email" required value={email}
